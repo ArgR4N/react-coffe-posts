@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const morgan = require('morgan')
 
-const port = 8080
-const db = 'mongodb://localhost/reddit2'
+const port = process.env.PORT        || 8080;
+const db   = process.env.MONGODB_URI || 'mongodb://localhost/reddit2';
 
 const app = express();
 
