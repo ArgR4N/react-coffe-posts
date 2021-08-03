@@ -53,5 +53,19 @@ router.post('/register', (req, res, next) =>{
     res.status(200).json(readyUser)
   })
 
+  router.get('/user/:id', (req, res) =>{
+    console.log(req.params.id)
+    User.findById(req.params.id)
+      .exec((err, user) =>{
+        if (err) next(err);
+        if( !user) res.send('There is no user!')
+        const readyUser ={
+          username:user.username,
+          createdAt:user.createdAt
+        }
+        res.status(200).json(readyUser)
+      })
+  })
+
 
 module.exports = router

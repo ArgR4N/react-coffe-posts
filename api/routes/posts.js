@@ -9,7 +9,6 @@ router.get('/posts', (req, res, next) =>{
     Post.find()
         .sort({createdAt:-1})
         .exec((err, posts) =>{
-            console.log(posts)
             if (err) next(err);
             const postsList = posts.map(post => ({
                 title:post.title,
