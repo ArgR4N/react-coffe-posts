@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
-const morgan = require('morgan')
+const morgan = require('morgan');
+const app = express();
+
+const passport = require('passport');
+const session = require('express-session');
 
 const port = process.env.PORT        || 8080;
 const db   = process.env.MONGODB_URI || 'mongodb://localhost/reddit2';
 
-const app = express();
 
 // conexion a la base de datos
 mongoose.set('useUnifiedTopology', true);
@@ -31,6 +34,16 @@ app.use(express.json());
 app.use(cors());
 // logger para desarrollo
 app.use(morgan('dev'));
+//Express Session
+app.use(session({
+  secret:'secret',
+  resave: true,
+  saveUninitialized: true
+}));
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+require('./api/passportConfig')(passport);
 // api router
 app.use('/api', require('./api/routes/users'));
 app.use('/api', require('./api/routes/posts'));
@@ -50,7 +63,12 @@ app.use((req, res, next) => {
     res.json({ error: err.message });
   });
   
+
+
+
   // listen
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
   });
+
+

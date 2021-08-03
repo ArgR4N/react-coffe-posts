@@ -2,20 +2,22 @@ const express = require('express');
 const Post = require('../models/Post')
 
 const router = require('express').Router();
+const session = require('express-session');
 
 
 router.get('/posts', (req, res, next) =>{
     Post.find()
-        .select('title text createdAt likes _id')
         .sort({createdAt:-1})
         .exec((err, posts) =>{
+            console.log(posts)
             if (err) next(err);
             const postsList = posts.map(post => ({
                 title:post.title,
                 text:post.text,
                 _id:post._id,
                 createdAt:post.createdAt,
-                likes:post.likes
+                likes:post.likes,
+                userId:post.userId
             }))
             res.status(200).json({
                 count:postsList.length,
@@ -27,7 +29,8 @@ router.get('/posts', (req, res, next) =>{
 router.post('/posts', (req, res, next) =>{
     const post = new Post({
         title:req.body.title,
-        text:req.body.text
+        text:req.body.text,
+        userId:req.body.userId
     })
     post.save((err, post) =>{
         if(err) next(err);
@@ -39,7 +42,7 @@ router.put('/posts/:id', (req, res, next) =>{
     const newPost = {
         title:req.body.title,
         text:req.body.text,
-        likes:req.body.likes,
+        likes:req.body.likes
     }
     Post.findByIdAndUpdate(req.params.id, newPost, {new: true, omitUndefined:true})
         .exec((err, post ) =>{
@@ -69,7 +72,8 @@ router.delete('/posts/:id', (req, res, next) =>{
                 text:post.text,
                 _id:post._id,
                 createdAt:post.createdAt,
-                likes:post.likes
+                likes:post.likes,
+                userId:post.userId
             }
             res.status(200).json(selectedPost)
         })

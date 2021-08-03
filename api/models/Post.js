@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
-
+const Schema = mongoose.Schema
 const PostSchema = new mongoose.Schema({
     title:{type:String, required:true},
     text:{type:String, required:true},
     createdAt:{type:Date, default:Date.now()},
-    likes:{type:Number, default:0}
+    likes:{type:Number, default:0},
+    userId:{type: Schema.Types.ObjectId, ref:'users' , required:true}
 }); 
 /*With users and forums functions
 const PostSchema = new mongoose.Schema({
