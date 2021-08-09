@@ -48,6 +48,7 @@ require('./api/passportConfig')(passport);
 // api router
 app.use('/api', require('./api/routes/users'));
 app.use('/api', require('./api/routes/posts'));
+app.use('/api', require('./api/routes/forums'));
 
 // error handlers (despues de las rutas de la API)
 // 404 not found
