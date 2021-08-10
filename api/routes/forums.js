@@ -24,17 +24,19 @@ router.post('/forums', (req, res, next) =>{
     const forum = new Forum({
         name:req.body.name,
         description:req.body.description,
-        users:req.body.users
+        users:[]
     })
-    Forum.findOne({name:req.body.name})
-        .exec((err, forum) =>{
+    Forum.findOne({name:forum.name})
+        .exec((err, createdForum) =>{
             if(err) next(err);
-            if(forum) res.status(400).send([false, 'The forum alredy exist!'])
+            if(createdForum) res.status(404).send([false, 'The forum alredy exist!'])
+            else{
+                forum.save((err, forum) =>{
+                    if(err) next(err);
+                    res.status(201).send([true, forum])
+                })
+            }
         } )
-    forum.save((err, forum) =>{
-        if(err) next(err);
-        res.status(201).send([true, forum])
-    })
 } )
 
 router.put('/forums/:forum', (req, res, next) =>{
@@ -65,9 +67,9 @@ router.delete('/forums/:id', (req, res, next) =>{
         .select('name description createdAt users')
         .exec((err, forum) =>{
             if (err) next(err);
-            if(!forum) return res.status(404).send("Not Found")
+            if(!forum) return res.status(404).json({msg:'not found'})
             const selectedForum = {
-                name:post.name,
+                name:forum.name,
                 createdAt:forum.createdAt,
                 description:forum.description,
                 users:forum.users

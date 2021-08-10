@@ -45,14 +45,16 @@ router.post('/register', (req, res, next) =>{
   });
 
   router.get('/user', (req, res) =>{
-    if(!req.user) res.send('not logged')
-    const readyUser = {
-      username:req.user.username,
-      createdAt:req.user.createdAt,
-      id:req.user._id,
-      savedPosts:user.savedPosts
-    }
-    res.status(200).json(readyUser)
+    if(!req.user) res.status(404).json({msg:"you are not logeed"})
+    else{
+        const readyUser = {
+          username:req.user.username,
+          createdAt:req.user.createdAt,
+          id:req.user._id,
+          savedPosts:user.savedPosts
+        }
+        res.status(200).json(readyUser)
+      }
   })
 
   router.get('/user/:username', (req, res) =>{
