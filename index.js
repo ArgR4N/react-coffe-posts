@@ -22,7 +22,6 @@ mongoose
   .catch(err => console.error(`Connection error ${err}`));
 
 //React frontend
-/*
 app.use(express.static('public'));
 app.get('/:route', (req, res) => {
   console.log(req.params.route)
@@ -32,7 +31,6 @@ app.get('/:route/:secondRoute', (req, res) => {
   console.log(req.params.route)
   res.sendFile(__dirname + '/public/index.html');
 });
-*/
 // middlewares
 // parsear bodys con json
 app.use(express.json());
