@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import Forum from './Forum'
 import ForumForm from './ForumForm';
 
-const Forums = ({ forums, createForm }) =>{
+const Forums = ({ forums, createForm, showModal, setShowModal }) =>{
     const [searchedForum, setSearchedForum] = useState('')
     const [foundForums, setFoundForums] = useState(forums)
-    const [showModal, setShowModal] = useState(false)
     useEffect(()=>{
         setFoundForums(forums)
     }, [forums])

@@ -24,11 +24,9 @@ mongoose
 //React frontend
 app.use(express.static('public'));
 app.get('/:route', (req, res) => {
-  console.log(req.params.route)
   res.sendFile(__dirname + '/public/index.html');
 });
-app.get('/:route/:secondRoute', (req, res) => {
-  console.log(req.params.route)
+app.get('/posts/:route', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 // middlewares

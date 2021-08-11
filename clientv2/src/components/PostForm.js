@@ -1,10 +1,9 @@
 import { useState } from "react";
 import * as Icon from 'react-bootstrap-icons';
-import { Dropdown } from 'react-bootstrap'
+import toast from 'react-hot-toast'
 const PostForm = ({addPost, username}) =>{
     //States
     const [newPost, setNewPost] = useState({title:'', text:'', forum:''})
-    const [errorState, setErrorState] = useState('')  
     const [isOpen, setIsOpen] = useState(false)
 
     const lengthEnsureFunction = () =>{
@@ -26,17 +25,17 @@ const PostForm = ({addPost, username}) =>{
     const handleSubmit = e =>{
         e.preventDefault()
         if(username){
+            const msg = lengthEnsureFunction()[1]
             if (lengthEnsureFunction()[0]) {
                 addPost({title:newPost.title, text:newPost.text, username})
                 setNewPost({title:'', text:''})
                 setIsOpen(false)
-                setErrorState(lengthEnsureFunction()[1])
             }else{
-                setErrorState(lengthEnsureFunction()[1])
+                toast.error(msg)
             }
         }
         if(!username){
-            setErrorState('You need to be logged in!')
+            toast.error('You need to be logged in!')
         }
     }
 
@@ -77,7 +76,6 @@ return(
         </div>
         <div>
         <button type="submit" className="w-25 btn btn-main">Post</button>
-        <small style={{userSelect:'none'}} className='mx-3'> {errorState} </small>
         </div>
     </form>
 );

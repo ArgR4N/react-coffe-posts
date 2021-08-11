@@ -29,7 +29,7 @@ router.post('/forums', (req, res, next) =>{
     Forum.findOne({name:forum.name})
         .exec((err, createdForum) =>{
             if(err) next(err);
-            if(createdForum) res.status(404).send([false, 'The forum alredy exist!'])
+            if(createdForum) res.status(404).send(new Error('The forum alredy exist'))
             else{
                 forum.save((err, forum) =>{
                     if(err) next(err);

@@ -1,10 +1,9 @@
 import Post from './components/Post'
 import PostForm from './components/PostForm'
-
 const Home = ( {postsList, addPost, deletePost, updatePost, user, savePost} ) =>{
   return(
-
       <main className='d-flex flex-row justify-content-center'>
+
         <section className='mainSection'>
           <div className='d-flex justify-content-center w-100'>
             <PostForm

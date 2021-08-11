@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "client": "npm run start --prefix client",
+    "client": "npm run start --prefix clientv2",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
@@ -26,6 +26,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-bootstrap": "^2.0.0-beta.4",
+    "react-hot-toast": "^2.1.0",
     "socket.io": "^4.1.3"
   }
 }

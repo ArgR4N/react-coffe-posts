@@ -1,6 +1,7 @@
-import { Link, useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { Link, useParams} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import * as Icon from 'react-bootstrap-icons';
 
 const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
@@ -11,6 +12,7 @@ const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
     const [editing, setEditing] = useState(editingParam)   
     const [errorState, setErrorState] = useState(' ')
     useEffect(() =>{
+        const loadingToast = toast.loading('Loading...')
         axios.get(`/api/posts/${postId}`)
             .then(res => {
                 const newSelectedPost ={
@@ -22,7 +24,9 @@ const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
                 setCoffees({original:res.data.likes, actual:res.data.likes})
                 setSelectedPost(newSelectedPost)
                 setNewPost({title:res.data.title, text:res.data.text})
+                toast.dismiss(loadingToast)
             })
+        
     }, [postId])
     const handleAddCoffee = () =>{
         if (coffees.actual !== coffees.original ) {
@@ -56,6 +60,7 @@ const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
                     }
                     setCoffees({original:res.data.likes, actual:res.data.likes})
                     setSelectedPost(newSelectedPost)
+                    toast.success('Edited!')
                 })
             axios.get('/api/posts')
                 .then(res =>{

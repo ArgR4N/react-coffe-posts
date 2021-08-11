@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt')
 router.post('/register', (req, res, next) =>{
     User.findOne({username: req.body.username}, (err, user) =>{
       if (err) throw err;
-      if (user) res.send([false, 'User alredy exist!'])
+      if (user) res.status(400).send(new Error('User alredy exist!'))
       if (!user){
         bcrypt.hash(req.body.password, 10)
           .then(result => {
@@ -20,7 +20,7 @@ router.post('/register', (req, res, next) =>{
               password: result
             })
             newUser.save()
-            .then(res.send([true, 'User Created!']))
+            .then(res.send('User Created!'));
           })
       }
     })
@@ -29,7 +29,7 @@ router.post('/register', (req, res, next) =>{
   router.post('/login', (req, res, next) =>{
     passport.authenticate("local",(err, user, info) =>{
       if(err) throw err;
-      if(!user) res.send([false, 'Username or Password are wrong!'])
+      if(!user) return res.status(401).send(new Error('User or Password wrong!'))
       else{
         req.logIn(user, err =>{
           if(err) throw err;
@@ -45,17 +45,15 @@ router.post('/register', (req, res, next) =>{
   });
 
   router.get('/user', (req, res) =>{
-    if(!req.user) res.status(404).json({msg:"you are not logeed"})
-    else{
+    if(!req.user) return res.status(501).json({msg:"you are not logeed"})
         const readyUser = {
           username:req.user.username,
           createdAt:req.user.createdAt,
           id:req.user._id,
-          savedPosts:user.savedPosts
+          savedPosts:req.user.savedPosts
         }
-        res.status(200).json(readyUser)
-      }
-  })
+        return res.status(200).json(readyUser)
+    })
 
   router.get('/user/:username', (req, res) =>{
     User.findOne({username:req.params.username})
