@@ -61,9 +61,8 @@ app.use((req, res, next) => {
   // algun error distinto a not found
   // defaultea a 500
   app.use((err, req, res, next) => {
-    res.status(err.status || 500);
     // DEBUG: console.error(err.stack)
-    res.json({ error: err.message });
+    res.status(err.status || 500).json({ error: err.message });
   });
   
 

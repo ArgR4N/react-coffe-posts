@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User')
-
+const Forum = require('../models/Forum')
 const router = require('express').Router();
 
 const passport = require('passport');
@@ -20,8 +20,11 @@ router.post('/register', (req, res, next) =>{
               password: result
             })
             newUser.save()
-            .then(res.send('User Created!'));
+            .then(savedUser =>{
+              return res.status(201).send(['User Created!', savedUser])
+            });
           })
+        
       }
     })
   })
@@ -45,11 +48,14 @@ router.post('/register', (req, res, next) =>{
   });
 
   router.get('/user', (req, res) =>{
-    if(!req.user) return res.status(501).json({msg:"you are not logeed"})
+    if(!req.user) return res.status(401).json({msg:"you are not logeed"})
         const readyUser = {
           username:req.user.username,
           createdAt:req.user.createdAt,
           id:req.user._id,
+          savedPosts:req.user.savedPosts,
+          description:req.user.description,
+          forums:req.user.forums,
           savedPosts:req.user.savedPosts
         }
         return res.status(200).json(readyUser)
@@ -57,29 +63,84 @@ router.post('/register', (req, res, next) =>{
 
   router.get('/user/:username', (req, res) =>{
     User.findOne({username:req.params.username})
-      .exec((err, user) =>{
-        if (err) next(err);
-        if(!user) res.send('There is no user!')
-        console.log(user)
-        const readyUser ={
-          username:user.username,
-          createdAt:user.createdAt,
-          userId:user._id,
-          savedPosts:user.savedPosts
-        }
-        res.status(200).json(readyUser)
+        .exec((err, user) =>{
+          if (err) next(err);
+          if(!user) return  res.send(false);
+          const readyUser ={
+            username:user.username,
+            createdAt:user.createdAt,
+            description:user.description,
+            forums:user.forums
+          }
+          return res.status(200).json(readyUser)
       })
   })
 
-  router.put('/users/:id', (req, res) =>{
-    console.log(req.body)
-    User.findByIdAndUpdate(req.params.id, {savedPosts:[...req.body.savedPosts, req.body.postId]}, {new: true, omitUndefined:true})
-      .exec((err, user ) =>{
-        console.log('a');
-        if(err) next(err);
-        if(!user) res.status(404).json({msg:"Not Found"});
-        res.status(200).json(user); 
-    })
+  router.put('/users/:id', (req, res, next) =>{
+    if(req.body.savedPosts){
+      let unSave = false;
+      req.body.savedPosts.forEach(id => id === req.body.postId ? unSave = true : null)
+      if(!unSave){
+        User.findByIdAndUpdate(req.params.id, {savedPosts:[...req.body.savedPosts, req.body.postId]}, {new: true, omitUndefined:true})
+        .exec((err, user ) =>{
+          if(err) return next(err);
+          if(!user) return res.status(404).json({msg:"Not Found"});
+          const readyUser ={
+            savedPosts:user.savedPosts
+            }
+            return res.status(200).json({readyUser, msg:'unsaved'})
+          })
+        }
+        else{
+          const savedPosts = [];
+          req.body.savedPosts.forEach(id =>{
+            if(id === req.body.postId) return null
+            else savedPosts.push(id);
+          });
+          User.findByIdAndUpdate(req.params.id, {savedPosts}, {new: true, omitUndefined:true})
+          .exec((err, user ) =>{
+            if(err) return next(err);
+            if(!user) return res.status(404).json({msg:"Not Found"});
+            const readyUser ={
+              savedPosts:user.savedPosts
+            }
+            return res.status(200).json({readyUser, msg:'saved'})
+          });
+        }
+    }else{
+      User.findByIdAndUpdate(req.params.id, req.body, {new: true, omitUndefined:true})
+        .exec((err, user) =>{
+          if(err) return next(err);
+          if(!user) return res.status(404).send('Not Found!')
+          const readyUser ={
+            username:user.username,
+            createdAt:user.createdAt,
+            description:user.description,
+            forums:user.forums,
+            savedPosts:user.savedPosts,
+            id:user._id
+          }
+          return res.status(201).json({newUser:readyUser, state:true})
+        })
+    }
+
+
+
+    // if(req.body.description){
+    //   User.findByIdAndUpdate(req.params.id, {description:req.body.description}, {new: true, omitUndefined:true})
+    //   .exec((err, user ) =>{
+    //     if(err) return next(err);
+    //     if(!user) return res.status(404).json({msg:"Not Found"});
+    //     const readyUser ={
+    //       description:user.description
+    //       }
+    //       return res.status(200).json({readyUser})
+    //     })
+    // }
+    // else{
+
+    // }
+      
 
   })
 

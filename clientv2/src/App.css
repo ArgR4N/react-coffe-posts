@@ -174,30 +174,59 @@ hr{
 .openForm, .closeForm{
   border-radius: 5px;
 }
-.openFormState:hover .openForm, .openFormState:hover .closeForm, .openForm:hover, .closeForm:hover{
-  padding: 1px;
-  transition: .3;
-  background-color: var(--secondary-color);
-  transition: .3s;
+
+.postFormModal{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(99, 94, 94, 0.652);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.postForumModalSection{
+  width: 90%;
+  height: 90%;
+  border-radius: 15px;
+  background-color: var(--detail-color);
+  padding: 20px;
+}
+
+.postForumModalSection ul{
+  padding: 0;
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.postForumModalSection li{
+  padding: 5px;
+  min-width: 25% ;
   border-radius: 5px;
-}
-.openFormState:hover .openForm::after, .openForm:hover::After{
-  position: absolute;
-  font-size: 12px;  
-  bottom: 14px;
-  right: 35px;
-  font-weight: 600;
+  background-color: white;
   color: var(--detail-color);
-  content: "Open Form";
+  font-size: 18px;
+  height: 35px;
+  overflow: hidden;
+  cursor: pointer;
 }
-.openFormState:hover .closeForm::after,.closeForm:hover::after{
-  position: absolute;
-  font-size: 12px;  
-  bottom: calc(100% - 29px);
-  right: 35px;
-  font-weight: 600;
-  color: var(--detail-color);
-  content: "Close Form";
+
+.postForumModalSection li:hover{
+  transform: scale(1.05);
+}
+
+.postForumModalSection li:active{
+  transform: scale(1);
+}
+
+.btn-danger{
+  z-index: 120;
 }
 
 /*navBar*/
@@ -351,6 +380,7 @@ a:hover{
 /*selectedPost*/
 .selectedPost{
   background-color: white;
+  border: 3px solid var(--detail-color);
   width: 90%;
   margin-top: 25px;
   max-width: 1300px;
@@ -361,7 +391,6 @@ a:hover{
   flex-direction: row;
   justify-content: space-between;
   overflow: hidden;
-  border: none;
   margin-bottom: 20px;
 }
 
@@ -414,6 +443,7 @@ a:hover{
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .forumForm{
@@ -440,17 +470,13 @@ a:hover{
 }
 
 .forum{
-  min-height: 150px;
+  height: 150px;
   width: 350px;
   background-color: white;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.forum:hover{
-  transform: scale(1.03);
+  padding: 0px 15px;
+  border-radius: 10px 10px 0 0;
 }
 
 .forumSearchBar input{
@@ -496,49 +522,223 @@ a:hover{
   color: white;  
 }
 
+.forumBtnContainer{
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  border-radius: 0 0 10px 10px;
+  padding: .5rem;
+}
+
+.forumBtnContainer a{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 80px;
+  font-size: 15px;
+}
+
+.forumBtnContainer svg{
+  font-size: 18px;
+}
+
+.unjoin svg{
+  transform: rotate(180deg);
+}
+
 /*Selected Forum*/
 .selectedForum{
-  background-color: var(--detail-color);
   display: flex;
   justify-content: space-evenly;
   flex-direction:column;
-  padding: 10px;
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
-  border-radius: 20px;
+}
+
+.selectedForumInfo{
+  padding: 10px;
+  width: 75%;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.selectedForum ul{
+  padding: 0;
+  margin: 0;
 }
 
 .selectedForum h2{
   border-radius: 7px;
-  padding: 0;
+  padding: 10px;
   margin: 0;
   display: block;
-  background: var(--main-gradient);
-  width: 25%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .selectedForum p{
   border-radius: 7px;
   font-size: 20px;
-  padding: 0;
+  padding: 5px;
   margin: 0;
   margin-top: 1rem;
   display: block;
-  background: var(--main-gradient);
   width: 25%;
+  overflow: auto;
 }
 
 .selectedForum h3{
-  background-color: var(--detail-color);
   display: flex;
   justify-content: space-evenly;
   flex-direction:column;
-  padding: 10px;
   width: 95%;
-  margin: 0 auto;
   border-radius: 20px;
 }
 
 
+.searchForumsList ul{
+  margin: 0;
+  padding: 10px;
+  background-color: var(--detail-color);
+  color: white;
+  width: 25%;
+  border-radius: 0 0 15px 15px;
+}
+
+.searchForumsList:focus{
+  border: none !important;
+}
+
+.searchForumsList div:hover{
+  background-color: rgba(194, 190, 190, 0.713);
+  cursor: pointer;
+  user-select: none;
+}
+.searchForumsList div{
+  cursor: pointer;
+  width: 100%;
+  user-select: none;
+}
+.anyForumsSearch{
+  position: absolute;
+  margin: 0;
+  padding: 10px;
+  background-color: var(--detail-color);
+  color: white;
+  width: 25%;
+  border-radius: 0 0 15px 15px;
+  user-select: none;
+}
+
+/*Selected User*/
+.profileSection{
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.userPosts{
+  margin: 0;
+  width: 50%;
+  max-width: 700px;
+  padding: 0;
+}
+
+.userInfo{
+  background-color: white;
+  width: 400px;
+  padding: 20px;
+  max-height: calc(100vh - 110px);
+  border-radius: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfoBtn{
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  font-size: 30px;
+  justify-content:flex-start;
+}
+
+.userInfoBtn button{
+  width: 25%;
+  display: flex;
+}
+
+.userPosts .post{
+  width: 100%;
+  margin-top: 0;
+}
+
+.descriptionSection{
+  display: flex;
+  align-items: flex-end;
+  gap: .8rem;
+  padding: .3rem;
+  color: var(--detail-color);
+}
+
+.descriptionSection svg{
+  color: var(--detail-color);
+  font-size: 30px;
+  padding: 3px;
+}
+.descriptionSection button:hover{
+  background-color: rgba(182, 179, 179, 0.432);
+}
+.logout{
+  color: red;
+}
+
+.btn-danger{
+  z-index: 0;
+}
+
+.logout::after{
+  content: 'Log Out';
+  opacity: 0;
+  transition: .3s;
+  font-size: 15px;
+}
+
+.logout:hover::after, .savedposts:hover::after{
+  opacity: 1;
+}
+
+.savedposts{
+  color: var(--detail-color);
+}
+
+.savedposts::after{
+  content: 'Saved Posts';
+  opacity: 0;
+  transition: .3s;
+  font-size: 15px;
+}
+/*Toast*/
+.toast{
+  width: 230px;
+  height: 45px;
+  font-size: 13px;
+  color: var(--detail-color);
+  border: 1.5px solid var(--main-color);
+  user-select: none;
+}
+/*Toast*/
+
+
+.btn-second{
+  background-color: var(--secondary-color);
+}
+
+.btn-second:hover{
+  z-index: 1;
+}
 
 @media (max-width: 600px) {
   .navBar{
@@ -647,7 +847,11 @@ a:hover{
   }
   .forumForm{
     width: 100%;
+    margin-top: 100px;
   }
+
+
+
   .btn-forum{
     opacity: 0.5;
   }
@@ -658,5 +862,24 @@ a:hover{
   .forumForm small{
     display: none;
   }
+
+  .profileSection{
+    padding: 25px;
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+
+  .profileSection .userPosts{
+    width: 100%;
+  }
+
+  .userInfo{
+    width: 100%;
+  }
+
+  .toast{
+    font-size: 16px;
+  }
+
 
 }

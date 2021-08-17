@@ -1,20 +1,38 @@
 import { useState } from "react"
+import toast from "react-hot-toast"
 
-const ForumForm = ({showModal, setShowModal, createForm}) =>{
+const ForumForm = ({showModal, setShowModal, createForm, handLeModalClick}) =>{
     const [newForum, setNewForum] = useState({name:'', description:''})
+
+
+    const lengthEnsureFunction = () =>{
+        if (newForum.name === '') {
+            return 'The forum needs a name!'
+        }
+        if (newForum.description === '') {
+            return 'The forum needs almost a simple description!'
+        }
+        if (newForum.name.split('').length > 250) {
+            return 'The name have a 250 characters max!'
+        }
+        if (newForum.description.split('').length > 1500) {
+            return 'The description have a 1500 characters max!'
+        }
+        else return ''
+    }
+
 
     const handleCreateForum = e =>{
         e.preventDefault();
-        createForm(newForum)
+        const msg  = lengthEnsureFunction()
+        if(msg === ''){
+            createForm(newForum)
+        }else{
+            toast.error(msg)
+        }
     }
     const handleNameChange = e =>{setNewForum(prevState => ({...prevState, name:e.target.value}))}
     const handleDescriptionChange = e =>{setNewForum(prevState => ({...prevState, description:e.target.value}))}
-
-    const handLeModalClick = e =>{
-        if (e.target.classList[0] === 'forumFormModal') {
-            setShowModal(false)
-        }
-    }
     return(
         <main onClick={handLeModalClick} style={showModal ? {} : {display:'none'}} className='forumFormModal'>
             <form  onSubmit={handleCreateForum} style={{margin:'0 auto'}} className='forumForm'>

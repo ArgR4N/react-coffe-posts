@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-const Post = ({title, text, deletePost, id,  coffees, updatePost, username, sessionUsername, savePost}) =>{
+const Post = ({inUser = false, isSaved, title, text, deletePost, id,  coffees, updatePost, postForum,  username, sessionUsername, savePost}) =>{
     const [options, setOptions] = useState(false)
     const [coffeesState, setCoffeesState] = useState({state:false, counter:coffees})
-    const [saveState, setSaveState] = useState(false)
+    const [saveState, setSaveState] = useState(isSaved)
     //Handlers
-
     const handleDelete = () =>{
         deletePost(id)
     }
@@ -22,16 +21,16 @@ const Post = ({title, text, deletePost, id,  coffees, updatePost, username, sess
     }
 
     const handleSavePost = () =>{
-        savePost(id)
+        savePost(id, setSaveState, saveState)
     }
     return(
             <div  className="card post ">
-                <Link to={`post/${id}`} className="card-body" >
+                <Link style={inUser ? {maxWidth:'none'} : {}} to={`/post/${id}`} className="card-body" >
                     <h5 className="card-title">{title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">forum - {username}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted"><Link to={`/Forum/${postForum}`}>{postForum}</Link> - <Link to={`/Profile/${username}`}>{username}</Link></h6>
                     <p className="card-text">{text}</p>
                 </Link>
-                <div className='btnContainer'>
+                <div style={inUser ? {display:'none'} : {}} className='btnContainer'>
                     <div>
                         <button onClick={() => setOptions(prev => (!prev))}>
                             <Icon.List/>
@@ -42,7 +41,7 @@ const Post = ({title, text, deletePost, id,  coffees, updatePost, username, sess
                                     <button 
                                     onClick={handleSavePost} 
                                     className={saveState ? 'unsave' : 'save'}>
-                                        {saveState
+                                        {isSaved
                                         ?<Icon.BookmarkFill/>
                                         :<Icon.Bookmark/>}
                                     </button>

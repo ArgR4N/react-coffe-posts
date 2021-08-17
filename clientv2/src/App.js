@@ -1,9 +1,9 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import axios from 'axios'
 import * as Icon from 'react-bootstrap-icons';
-import toast, { Toaster } from 'react-hot-toast';
 //Components =>
+//Toaster
+import { Toaster } from 'react-hot-toast';
 import Home from './Home'
 import NavBar from './components/NavBar';
 import SelectedPost from './SelectedPost'
@@ -11,7 +11,16 @@ import Forums from './components/Forums'
 import LogInForm from './components/LogInForm'
 import RegisterForm from './components/RegisterForm'
 import SelectedForum from './components/SelectedForum';
+import SelectedProfile from './components/SelectedProfile'
 //Components <=
+
+//Services =>
+import { addPostService, updatePostService, deletePostService, getPostsService } from './services/postsServices'
+import { logInService, registerService, logOutService, savePostService, getUserService } from './services/userServices'
+import { createFormService, geForumsService } from './services/forumsServices';
+//Services <=
+
+
 //Routes =>
 import React from "react";
 import {
@@ -31,142 +40,38 @@ const App = () => {
 
   useEffect( () =>{
     //Fetch de los posts
-    axios.get('/api/posts')
-    .then(res =>{
-      setPostsList(res.data.posts)
-    })
+    getPostsService(setPostsList)
     //Fetch de los forums
-    axios.get('/api/forums')
-    .then(res => {
-      setForums(res.data.forums)
-    })
+    geForumsService(setForums)
     //Fetch de los users
-    axios.get('/api/user')
-    .then(res =>{
-      if (!res.data.msg) {
-        setUser(res.data)
-        toast.success(`Welcome back ${res.data.username}!`, {duration:1500})
-      }else{
-        return null;
-      }
-    })
+    getUserService(setUser)
   }, [])
+
+  //Post functions =>
+  const addPost = (post) => addPostService(post, setPostsList)
+  const deletePost = (id) => deletePostService(id, setPostsList, postsList)
+  const updatePost = (id, newPost) => updatePostService(id, newPost, setPostsList)
+  //Post functions <=
   
-  const addPost = (post) =>{
-    const addPostPromise = axios.post('/api/posts', post)
-      .then(res => {setPostsList(prevState => [res.data, ...prevState])});
-    toast.promise(addPostPromise, {
-      loading:'Posting...',
-      success:'Posted!',
-      error:res =>`This happened:${res}`
-    })
-  };
-
-  const deletePost = (id) =>{
-    let newPostList = []
-    const deletePromise = axios.delete(`/api/posts/${id}`)
-      .then(res =>{
-        postsList.forEach(post => post._id === id ? null : newPostList.push(post));
-        setPostsList(newPostList);
-      });
-      toast.promise(deletePromise,{
-        loading: 'Deleting...',
-        success: `Successfully deleted`,
-        error: (err) => `This just happened: ${err.toString()}!`,
-      })
-  }
-
-  const updatePost = (id, newPost) =>{
-    const loadingToast = toast.loading('Updating...')
-    const updatePostPromise = axios.put(`/api/posts/${id}`, newPost)
-      .then(res => {
-        toast.dismiss(loadingToast)
-        if(res.data[0]){
-          setPostsList(prevState => prevState.map(post => post._id !== id ? post : res.data))
-        } 
-        toast.success('Successfully updated!')
-      })
-    if(!newPost.likes){
-      toast.promise(updatePostPromise, {
-        loading:'Updating...',
-        success:'Updated!',
-        error:res => `This happened: ${res}`
-      })
-    }
+  //User functions =>
+  const logInFunction = (user) => logInService(user, setUser)  
+  const registerFunction = (user) => registerService(user, setUser)
+  const logOutFunction = _ => logOutService(setUser)
+  const savePost = (postId, setSaveState, saveState) => savePostService(postId, setSaveState, saveState, user, setUser)
+  //User functions <=
   
-    }
-
-
-  //User functions
-  const logInFunction = (user) =>{
-      const logInPromise = axios.post('api/login', user)
-        .then(res => {
-          const [state, user] = res.data
-          console.log(state, user);
-          const {username, _id, createdAt, savedPosts} = user
-          const userWrongFunction = () =>{
-            setUser(null);
-            toast.error('Username or Password wrong!')
-          }
-          state 
-            ? setUser({username, id:_id, createdAt, savedPosts})
-            : userWrongFunction()
-        })
-      //Toast
-      toast.promise(logInPromise, {
-        loading:'Login in...',
-        error: 'User or Password are wrong!',
-        success:'Logged'
-      })
-  }  
-  const registerFunction = (user) =>{
-    if (user.username !== '' && user.password !== '') {
-      const registerPromise = axios.post('api/register', user)
-      //Toast
-      toast.promise(registerPromise, {
-        loading:'Registering...',
-        success:res => `${res.data}`,
-        error:'User alredy exist!'
-      })
-    }else{
-      //Toast
-      
-    }
-  }
-  const logOutFunction = () =>{
-    axios.get('/api/logout')
-      .then(() => {
-        setUser(null)
-        toast('Logged Out!', {icon:'👌'});
-      })
-  }
+  //Forums functions =>
+  const createForm = newForm => createFormService(newForm, setForums, setShowModal)
+  //Forums functions <=
   
-  const savePost = postId =>{
-    axios.put(`/api/users/${user ? user.id : 'none'}`, {postId, savedPosts:user.savedPosts})
-      .then(res => console.log(res))
-  }
-
+  //NavBarSearchSection =>
   const [displayShow, setDisplayShow] = useState(false)
   const handleClick = e =>{
     if (e.target.classList[0] !== 'navItem') {
       setDisplayShow(false)
     }
   }
-
-  const createForm = newForm =>{
-    const createFormPromise = axios.post('/api/forums', newForm)
-      .then(res => {
-        if(res.data) {
-          setForums(prev => [...prev, res.data[1]])
-          setShowModal(false)  
-        }
-      })
-    toast.promise(createFormPromise, {
-      loading:'Creating form...',
-      success:'Forum created!',
-      error:'The forum alredy exist!'
-    })
-  }
+  //NavBarSearchSection <=
 
   const activeResponsive = () =>{
     setNavBarOpen(prev => !prev)
@@ -176,8 +81,11 @@ const App = () => {
     <Router>
     <div onClick={handleClick} className='main'>
       <Toaster 
-       position="top-right"
+       position={window.screen.width > 600 ? "top-right" : "top-center"}
        reverseOrder={false}
+       toastOptions={{
+          className:'toast'
+      }}
        />
       <div className='navBarResponsiveBtn'>
         <button onClick={window.window < 600 ? {} : () =>{ activeResponsive() }}>
@@ -200,26 +108,41 @@ const App = () => {
       <Switch>
       <Route path="/Post/:postId&:editingParam">
           <SelectedPost 
+            sessionUsername={user ? user.username : ''} 
             addPost={addPost}
+            savePost={savePost}
             deletePost={deletePost} 
             updatePost={updatePost}
+            user={user}
             setPostsList={setPostsList}
             />
       </Route>
       <Route path="/Post/:postId">
           <SelectedPost 
-            user={user} 
+            sessionUsername={user ? user.username : ''} 
             addPost={addPost}
+            savePost={savePost}
             setPostsList={setPostsList}
             deletePost={deletePost} 
             updatePost={updatePost}
-          />
+            />
       </Route>
       <Route path="/Forums">
-        <Forums forums={forums} createForm={createForm} showModal={showModal} setShowModal={setShowModal} />
+        <Forums 
+        setUser={setUser} 
+        addPost={addPost} 
+        user={user} 
+        forums={forums} 
+        createForm={createForm} 
+        showModal={showModal} 
+        setShowModal={setShowModal} 
+        />
       </Route>
       <Route path="/Forum/:forum">
         <SelectedForum/>
+      </Route>
+      <Route path="/Profile/:user">
+        <SelectedProfile />
       </Route>
       <Route path="/Profile">
         <Profile
@@ -247,6 +170,7 @@ const App = () => {
           deletePost={deletePost} 
           updatePost={updatePost}
           savePost={savePost}
+          forums={forums.length > 0 ? forums : []}
           />
       </Route>
       <Route path='/:noFound'>
@@ -262,31 +186,4 @@ const App = () => {
   </Router>
   );
 }
-/*
- <div className='main'>
-            
-      <NavBar
-      postsList={postsList} />
-
-    <main className='d-flex flex-row justify-content-center'>
-    <section className='mainSection'>
-        <div className='d-flex justify-content-center w-100'>
-          <PostForm
-          addPost={addPost} />
-        </div>
-        <div className='mt-3 postsContainer'>
-          {postsList.map(post =>(
-            <Post
-            key={post._id}
-            title={post.title}
-            text={post.text}
-            deletePost={deletePost}
-            id={post._id}
-            />
-          ))}
-        </div>
-      </section>
-    </main>
-    </div>
-*/
 export default App;

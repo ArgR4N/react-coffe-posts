@@ -4,13 +4,15 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import * as Icon from 'react-bootstrap-icons';
 
-const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
+const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, savePost}) =>{
+    const { postId, editingParam } = useParams() 
+    
     const [selectedPost, setSelectedPost] = useState({})
     const [newPost, setNewPost] = useState({title:'',text:''})
     const [coffees, setCoffees] = useState({original:0, actual:0})
-    const { postId, editingParam } = useParams() 
-    const [editing, setEditing] = useState(editingParam)   
     const [errorState, setErrorState] = useState(' ')
+    const [editing, setEditing] = useState(editingParam)   
+    
     useEffect(() =>{
         const loadingToast = toast.loading('Loading...')
         axios.get(`/api/posts/${postId}`)
@@ -134,14 +136,14 @@ const SelectedPost = ({updatePost, deletePost, setPostsList}) =>{
                                     </button>
                                 </li>                     
                                 <li>
-                                    <Link to='/'>
+                                    <Link style={selectedPost.username === sessionUsername ? {} : {display:'none'}} to='/'>
                                         <button onClick={handleDelete}  className='delete'>
                                             <Icon.DashCircleFill/>
                                         </button>
                                     </Link>
                                 </li>                     
                                 <li>
-                                    <div onClick={() => setEditing(true)} >
+                                    <div style={selectedPost.username === sessionUsername ? {} : {display:'none'}} onClick={() => setEditing(true)} >
                                         <button className='edit'>
                                             <Icon.PencilSquare/>
                                         </button>
