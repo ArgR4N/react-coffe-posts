@@ -1,6 +1,8 @@
 import * as Icon from 'react-bootstrap-icons';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
+
 const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNavBarOpen}) =>{
     //States
     const [searchText, setSearchText] = useState('')
@@ -25,18 +27,10 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
             setFoundPosts([])
         }
     }
-    const putLimit = (array) =>{
-        let newArray = []
-        array.forEach(item =>{
-            if (array.indexOf(item) < 3) {
-                newArray.push(item)
-            }
-        })
-        return newArray;
-    } 
     return(
         <nav onClick={() => setNavBarOpen(false)} className={`navBar ${navBarOpen ? 'navBarOpen' : ''}`}>
-            <Link to='/' className='gap-2 navText'>
+            <ReactTooltip place='bottom' />
+            <Link data-tip="Home" to='/' className='gap-2 navText'>
                 <Icon.CupFill/>
                 CoffeePosts
             </Link>   
@@ -72,32 +66,35 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
                 </ul>
             </div>
 
-            <div className=' navItem navSearch navItem'>
-                <Icon.Search/>
-                <input className='navItem' value={searchText} onChange={handleSearchBarChange} type='text'></input>
+            <div style={{cursor:'default'}} className=' navItem navSearch navItem'>
+                <input placeholder='Search...' className='navItem' value={searchText} onChange={handleSearchBarChange} type='text'></input>
                 <section className='navItem searchDisplay' style={displayShow ? {} : {display:'none'}}>
                     <h5>Posts</h5>
                     {foundPosts.length > 0
                     ?
                     <div> 
-                        {putLimit(foundPosts).map(post=>(
+                        {foundPosts.map(post=>(
                                 <Link to={`/post/${post._id}`} >
-                            <button className='navItem navBarFounded ' 
-                                    onClick={() => setDisplayShow(false)} 
-                                    
-                                    style={{color:'grey'}}> 
-                                    <span className='navItem' style={{color:'white'}}>
-                                    {post.title}
-                                    </span>
-                                    <br/> Bard-main / {post.user} 
-                            </button>
+                                    <button className='navItem navBarFounded ' 
+                                            onClick={() => setDisplayShow(false)} 
+                                            style={{color:'grey'}}> 
+                                            <span className='navItem' style={{color:'white'}}>
+                                            {post.title}
+                                            </span>
+                                            <br/> {post.forum} - {post.user} 
+                                    </button>
                                 </Link>
                         ))} 
                     </div>
                     : 
                     <h6 style={{color:'grey'}} className=' navItem mt-2'>Nothing Found!</h6>}
+                    
 
+                    <Link to={`/Searching&search=${searchText}`} className='searchDisplayOthers'>See more posts, users or forums here! </Link>
                 </section>
+                    <Link data-tip="Search" className='d-flex align-items-center' to={`/Searching&search=${searchText}`}>
+                        <Icon.Search />
+                    </Link>
                 
             </div>       
         </nav>

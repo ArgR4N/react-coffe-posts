@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 
 const ForumSchema = new mongoose.Schema({
     name:{type:String, required: true},
-    createdAt:{type:Date, default:Date.now()},
+    comments: {type:Array, default:[]},
     description:{type:String, required: true},
+    createdAt:{type:Date, default:Date.now()},
     users:{type:Array, required: true}
 }); 
 

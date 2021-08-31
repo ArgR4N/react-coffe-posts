@@ -12,6 +12,7 @@ import LogInForm from './components/LogInForm'
 import RegisterForm from './components/RegisterForm'
 import SelectedForum from './components/SelectedForum';
 import SelectedProfile from './components/SelectedProfile'
+import SearchingSection from './components/SearchingSection';
 //Components <=
 
 //Services =>
@@ -81,7 +82,7 @@ const App = () => {
     <Router>
     <div onClick={handleClick} className='main'>
       <Toaster 
-       position={window.screen.width > 600 ? "top-right" : "top-center"}
+       position={window.screen.width > 600 ? "bottom-right" : "top-center"}
        reverseOrder={false}
        toastOptions={{
           className:'toast'
@@ -106,81 +107,100 @@ const App = () => {
       />
       <hr className='my-5'></hr>
       <Switch>
-      <Route path="/Post/:postId&:editingParam">
-          <SelectedPost 
-            sessionUsername={user ? user.username : ''} 
-            addPost={addPost}
-            savePost={savePost}
-            deletePost={deletePost} 
-            updatePost={updatePost}
-            user={user}
-            setPostsList={setPostsList}
-            />
-      </Route>
-      <Route path="/Post/:postId">
-          <SelectedPost 
-            sessionUsername={user ? user.username : ''} 
-            addPost={addPost}
-            savePost={savePost}
-            setPostsList={setPostsList}
-            deletePost={deletePost} 
-            updatePost={updatePost}
-            />
-      </Route>
-      <Route path="/Forums">
-        <Forums 
-        setUser={setUser} 
-        addPost={addPost} 
-        user={user} 
-        forums={forums} 
-        createForm={createForm} 
-        showModal={showModal} 
-        setShowModal={setShowModal} 
-        />
-      </Route>
-      <Route path="/Forum/:forum">
-        <SelectedForum/>
-      </Route>
-      <Route path="/Profile/:user">
-        <SelectedProfile />
-      </Route>
-      <Route path="/Profile">
-        <Profile
-        logOutFunction={logOutFunction}
-        user={user} 
-        />
-      </Route>
-      <Route path="/LogIn">
-      <LogInForm 
-        logInFunction={logInFunction}
-        user={user}
-          />
-      </Route>
-      <Route path="/Register">
-      <RegisterForm 
-      registerFunction={registerFunction}
-      user={user}
-          />
-      </Route>
-      <Route path="/Home">
-      <Home 
-          user={user} 
+
+        <Route path="/Searching&search=:search">
+          <SearchingSection 
+          forums={forums}
           postsList={postsList}
-          addPost={addPost}
-          deletePost={deletePost} 
-          updatePost={updatePost}
-          savePost={savePost}
-          forums={forums.length > 0 ? forums : []}
+                      />
+        </Route>
+
+        <Route path="/Post/:postId&:editingParam">
+            <SelectedPost 
+              sessionUsername={user ? user.username : ''} 
+              addPost={addPost}
+              savePost={savePost}
+              deletePost={deletePost} 
+              updatePost={updatePost}
+              user={user}
+              setPostsList={setPostsList}
+              />
+        </Route>
+
+        <Route path="/Post/:postId">
+            <SelectedPost 
+              sessionUsername={user ? user.username : ''} 
+              addPost={addPost}
+              savePost={savePost}
+              setPostsList={setPostsList}
+              deletePost={deletePost} 
+              updatePost={updatePost}
+              />
+        </Route>
+
+        <Route path="/Forums">
+          <Forums 
+          setUser={setUser} 
+          addPost={addPost} 
+          user={user} 
+          forums={forums} 
+          createForm={createForm} 
+          showModal={showModal} 
+          setShowModal={setShowModal} 
           />
-      </Route>
-      <Route path='/:noFound'>
-        {() =>{
-          return(<h3 style={{textAlign:'center'}}>404 Page Not Found</h3>)
-        }}
-      </Route>
-      <Route path="/">
-        <Redirect to='/Home'/>
-      </Route>
+        </Route>
+
+        <Route path="/Forum/:forum">
+          <SelectedForum/>
+        </Route>
+
+        <Route path="/Profile/:user">
+          <SelectedProfile />
+        </Route>
+
+        <Route path="/Profile">
+          <Profile
+          logOutFunction={logOutFunction}
+          user={user} 
+          />
+        </Route>
+
+        <Route path="/LogIn">
+        <LogInForm 
+          logInFunction={logInFunction}
+          user={user}
+            />
+        </Route>
+
+        <Route path="/Register">
+        <RegisterForm 
+        registerFunction={registerFunction}
+        user={user}
+            />
+        </Route>
+
+        <Route path="/Home">
+        <Home 
+            user={user} 
+            postsList={postsList}
+            addPost={addPost}
+            deletePost={deletePost} 
+            updatePost={updatePost}
+            savePost={savePost}
+            forums={forums.length > 0 ? forums : []}
+            />
+        </Route>
+
+        <Route path='/:noFound'>
+          {() =>{
+            return(<h3 style={{textAlign:'center'}}>404 Page Not Found</h3>)
+          }}
+        </Route>
+
+        <Route path="/">
+          <Redirect to='/Home'/>
+        </Route>
+
       </Switch>
     </div>
   </Router>

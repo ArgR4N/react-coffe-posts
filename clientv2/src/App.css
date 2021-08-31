@@ -5,14 +5,14 @@
 }
 
 :root{
-  --main-color: #56E5CC;
-  --secondary-color:#B0A4FF;
-  --detail-color:#2F4858;
-  --main-gradient:linear-gradient(to right top, #56e5cc, #00ddef, #00cfff, #69bcff, #b0a4ff);
+  --main-color: #CFCF8C;
+  --secondary-color:#CFCF8C;
+  --detail-color:#030303;
+  --main-gradient:#CFCF8C;
 }
 
 .main{
-  background-image: var(--main-gradient);
+  background: rgb(221, 221, 198);
   min-height: 100vh;
   color: var(--detail-color);
   overflow-x: hidden;
@@ -168,9 +168,12 @@ hr{
 
 /*Post Form*/
 .btn-main{
-  background-image: var(--main-gradient);
+  background-color: var(--main-gradient);
   color: white;
 }
+
+
+
 .openForm, .closeForm{
   border-radius: 5px;
 }
@@ -286,6 +289,18 @@ hr{
 }
 
 .navSearch svg{
+  transition: .4s;
+}
+
+.navSearch input::placeholder{
+  color: white;
+}
+
+.navSearch svg:hover{
+  transform: scale(1.2);
+}
+
+.navSearch svg{
   font-size: 25px;
 }
 
@@ -308,6 +323,20 @@ hr{
   overflow-x: auto;
 }
 
+.searchDisplayOthers{
+  color: white;
+  position: sticky;
+  padding: 3px ;
+  background-color: rgba(184, 180, 180, 0.357);
+  border-radius: 2px;
+  font-size: 13px;
+  bottom: 0;
+}
+
+.searchDisplayOthers:hover{
+  background-color: var(--secondary-color);
+  color: white;
+}
 
 .btn-search{
   padding: 3px 5px;
@@ -584,7 +613,6 @@ a:hover{
   margin: 0;
   margin-top: 1rem;
   display: block;
-  width: 25%;
   overflow: auto;
 }
 

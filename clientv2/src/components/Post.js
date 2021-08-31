@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-const Post = ({inUser = false, isSaved, title, text, deletePost, id,  coffees, updatePost, postForum,  username, sessionUsername, savePost}) =>{
+const Post = ({inUser = false, inForum = false ,  isSaved, title, text, deletePost, id,  coffees, updatePost, postForum,  username, sessionUsername, savePost}) =>{
     const [options, setOptions] = useState(false)
     const [coffeesState, setCoffeesState] = useState({state:false, counter:coffees})
     const [saveState, setSaveState] = useState(isSaved)
@@ -24,7 +24,7 @@ const Post = ({inUser = false, isSaved, title, text, deletePost, id,  coffees, u
         savePost(id, setSaveState, saveState)
     }
     return(
-            <div  className="card post ">
+            <div  className={`card post ${inForum ?  'w-100 m-2' : ''}`}>
                 <Link style={inUser ? {maxWidth:'none'} : {}} to={`/post/${id}`} className="card-body" >
                     <h5 className="card-title">{title}</h5>
                     <h6 className="card-subtitle mb-2 text-muted"><Link to={`/Forum/${postForum}`}>{postForum}</Link> - <Link to={`/Profile/${username}`}>{username}</Link></h6>

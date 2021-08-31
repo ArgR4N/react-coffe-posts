@@ -4,6 +4,8 @@ const router = require('express').Router();
 const Forum = require('../models/Forum')
 
 router.get('/forums', (req, res, next) =>{
+    
+
     Forum.find()
         .exec((err, forums) =>{
             if (err) next(err);
@@ -24,7 +26,7 @@ router.post('/forums', (req, res, next) =>{
     const forum = new Forum({
         name:req.body.name,
         description:req.body.description,
-        users:[]
+        users:[req.user.username]
     })
     Forum.findOne({name:forum.name})
         .exec((err, createdForum) =>{

@@ -35,12 +35,12 @@ const Forum = ({forum, user, setShowForm, setClickedForum, joinFunction, unJoinF
             <div  className='forumBtnContainer'>
             {isJoined 
             ?                
-            <Link to='/Forums' onClick={user ? handleUnJoinClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? isJoined ? 'btn-danger' : 'btn-info' : 'btn-secondary'}`}>
+            <Link to='/Forums' onClick={user ? handleUnJoinClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? isJoined ? 'btn-danger' : 'btn-main' : 'btn-secondary'}`}>
                 UnJoin
                 <Icon.PlayFill/>
                 </Link>
             :     
-            <Link to='/Forums' onClick={user ? handleJoinClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? isJoined ? 'btn-danger' : 'btn-info' : 'btn-secondary'}`}>
+            <Link to='/Forums' onClick={user ? handleJoinClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? isJoined ? 'btn-danger' : 'btn-main' : 'btn-secondary'}`}>
                 Join
                 <Icon.Play/>
             </Link>}

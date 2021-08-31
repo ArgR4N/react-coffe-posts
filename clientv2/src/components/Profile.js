@@ -31,7 +31,6 @@ const Profile = ({user, logOutFunction}) =>{
         }
     }, [user])
 
-
     const renderNoPost = () =>{
         setTimeout(() => {setMsgState(false)}, 2000)
         return(

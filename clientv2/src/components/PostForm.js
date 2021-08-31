@@ -38,7 +38,7 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
             if (lengthEnsureFunction()[0]) {
                 addPost({...newPost, username})
                 setNewPost({title:'', text:''})
-                setIsOpen(false)
+                setIsOpen(alredyOpen)
                 return setShowForm ? setShowForm(false) : null
             }else{
                 toast.error(msg)

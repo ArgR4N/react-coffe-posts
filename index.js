@@ -26,7 +26,7 @@ app.use(express.static('public'));
 app.get('/:route', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
-app.get('/posts/:route', (req, res) => {
+app.get('/post/:route', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 // middlewares
