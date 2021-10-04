@@ -7,12 +7,13 @@ import { Toaster } from 'react-hot-toast';
 import Home from './Home'
 import NavBar from './components/NavBar';
 import SelectedPost from './SelectedPost'
-import Forums from './components/Forums'
-import LogInForm from './components/LogInForm'
-import RegisterForm from './components/RegisterForm'
-import SelectedForum from './components/SelectedForum';
-import SelectedProfile from './components/SelectedProfile'
+import Forums from './components/Forums/Forums'
+import LogInForm from './components/Users/LogInForm'
+import RegisterForm from './components/Users/RegisterForm'
+import SelectedForum from './components/Forums/SelectedForum';
+import SelectedProfile from './components/Users/SelectedProfile'
 import SearchingSection from './components/SearchingSection';
+import Profile from './components/Users/Profile';
 //Components <=
 
 //Services =>
@@ -30,11 +31,13 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import Profile from './components/Profile';
 //ROutes <=
 const App = () => {
   const [forums, setForums] = useState([])
   const [postsList, setPostsList] = useState([])
+  const [users, setUsers] = useState([])
+
+  //User Session
   const [user, setUser] = useState(null)
   const [navBarOpen, setNavBarOpen] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -44,8 +47,8 @@ const App = () => {
     getPostsService(setPostsList)
     //Fetch de los forums
     geForumsService(setForums)
-    //Fetch de los users
-    getUserService(setUser)
+    //Fetch del usuario y de los usuarios
+    getUserService(setUser, setUsers)
   }, [])
 
   //Post functions =>
@@ -110,7 +113,7 @@ const App = () => {
 
         <Route path="/Searching&search=:search">
           <SearchingSection 
-          forums={forums}
+          users={users}
           postsList={postsList}
                       />
         </Route>
@@ -151,7 +154,7 @@ const App = () => {
         </Route>
 
         <Route path="/Forum/:forum">
-          <SelectedForum/>
+          <SelectedForum user={user}  setUser={setUser} forums={forums} />
         </Route>
 
         <Route path="/Profile/:user">

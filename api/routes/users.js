@@ -17,7 +17,8 @@ router.post('/register', (req, res, next) =>{
           .then(result => {
             const newUser = new User({
               username:req.body.username,
-              password: result
+              password: result,
+              userIcon:`https://avatars.dicebear.com/api/big-smile/${req.body.username}.svg`
             })
             newUser.save()
             .then(savedUser =>{
@@ -56,7 +57,8 @@ router.post('/register', (req, res, next) =>{
           savedPosts:req.user.savedPosts,
           description:req.user.description,
           forums:req.user.forums,
-          savedPosts:req.user.savedPosts
+          savedPosts:req.user.savedPosts,
+          userIcon:req.user.userIcon
         }
         return res.status(200).json(readyUser)
     })
@@ -70,11 +72,29 @@ router.post('/register', (req, res, next) =>{
             username:user.username,
             createdAt:user.createdAt,
             description:user.description,
-            forums:user.forums
+            forums:user.forums,
+            userIcon:user.userIcon
           }
           return res.status(200).json(readyUser)
       })
   })
+
+  router.get('/users', (req, res, next) =>{
+    User.find()
+    .exec((err, users) =>{
+      if(err) return next(err);
+      if(!users) return res.status(404)
+      const usersList = users.map(user =>(
+        {
+          username:user.username,
+          description:user.description,
+          forums:user.forums,
+          userIcon:user.userIcon
+        }
+      ))
+      return res.status(200).json(usersList)
+    })
+  } )
 
   router.put('/users/:id', (req, res, next) =>{
     if(req.body.savedPosts){
@@ -118,30 +138,12 @@ router.post('/register', (req, res, next) =>{
             description:user.description,
             forums:user.forums,
             savedPosts:user.savedPosts,
-            id:user._id
+            id:user._id,
+            userIcon:user.userIcon
           }
           return res.status(201).json({newUser:readyUser, state:true})
         })
     }
-
-
-
-    // if(req.body.description){
-    //   User.findByIdAndUpdate(req.params.id, {description:req.body.description}, {new: true, omitUndefined:true})
-    //   .exec((err, user ) =>{
-    //     if(err) return next(err);
-    //     if(!user) return res.status(404).json({msg:"Not Found"});
-    //     const readyUser ={
-    //       description:user.description
-    //       }
-    //       return res.status(200).json({readyUser})
-    //     })
-    // }
-    // else{
-
-    // }
-      
-
   })
 
 

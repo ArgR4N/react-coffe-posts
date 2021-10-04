@@ -34,9 +34,6 @@ export const registerService = (user, setUser) =>{
         success:`User Created!`,
         error:res => res.toString()
       })
-    }else{
-      //Toast
-      
     }
   }
 
@@ -64,7 +61,11 @@ export const savePostService = (postId, setSaveState, saveState, user, setUser) 
       }
 }
 
-export const getUserService = setUser =>{
+export const getUserService = (setUser, setUsers) =>{
+  axios.get('/api/users')
+  .then(res =>{
+    setUsers(res.data)
+  })
   axios.get('/api/user')
   .then(res =>{
     if (!res.data.msg) {

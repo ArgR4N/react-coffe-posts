@@ -1,8 +1,7 @@
 import * as Icon from 'react-bootstrap-icons';
 import { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-
 const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNavBarOpen}) =>{
     //States
     const [searchText, setSearchText] = useState('')
@@ -27,16 +26,15 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
             setFoundPosts([])
         }
     }
+    const setLimit = list =>{
+        return list.slice(0, 3)
+    }
     return(
-        <nav onClick={() => setNavBarOpen(false)} className={`navBar ${navBarOpen ? 'navBarOpen' : ''}`}>
+        <nav onClick={e => setNavBarOpen(e.target.id === 'searchBar')} className={`navBar ${navBarOpen ? 'navBarOpen' : ''}`}>
             <ReactTooltip place='bottom' />
-            <Link data-tip="Home" to='/' className='gap-2 navText'>
+            <Link to='/' data-tip="Home"  className='gap-2 navText'>
                 <Icon.CupFill/>
                 CoffeePosts
-            </Link>   
-            <Link to='/' className='gap-2 navText navHomeBtn'>
-                <Icon.HouseFill/>
-                Home
             </Link>   
             <div className='navSocailFunctions'>
                 <ul>
@@ -48,13 +46,17 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
                             </div>
                         </Link>
                     </li>
-                    
+                    <li>
+                        <Link to='/' className='gap-2 navText navHomeBtn'>
+                                <Icon.HouseFill/>
+                        </Link>   
+                    </li>
                     <li>
                         <Link to='/Profile'>
                             {user ?
-                            <div>
-                                <Icon.PersonFill/>
-                                {user.username}
+                            <div className='d-flex align-items-center gap-1'>
+                                <img style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${user.username}.svg?background=white`}></img>
+                                <h5 style={{margin:'0'}}>{user.username}</h5>
                             </div>
                             :
                             <div>
@@ -66,14 +68,14 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
                 </ul>
             </div>
 
-            <div style={{cursor:'default'}} className=' navItem navSearch navItem'>
-                <input placeholder='Search...' className='navItem' value={searchText} onChange={handleSearchBarChange} type='text'></input>
-                <section className='navItem searchDisplay' style={displayShow ? {} : {display:'none'}}>
+            <div  style={{cursor:'default'}} className=' navItem navSearch navItem'>
+                <input  id="searchBar" placeholder='Search...' className='navItem' value={searchText} onChange={handleSearchBarChange} type='text'></input>
+                <section  className='navItem searchDisplay' style={displayShow ? {} : {display:'none'}}>
                     <h5>Posts</h5>
                     {foundPosts.length > 0
                     ?
                     <div> 
-                        {foundPosts.map(post=>(
+                        {setLimit(foundPosts).map(post=>(
                                 <Link to={`/post/${post._id}`} >
                                     <button className='navItem navBarFounded ' 
                                             onClick={() => setDisplayShow(false)} 
@@ -90,9 +92,9 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
                     <h6 style={{color:'grey'}} className=' navItem mt-2'>Nothing Found!</h6>}
                     
 
-                    <Link to={`/Searching&search=${searchText}`} className='searchDisplayOthers'>See more posts, users or forums here! </Link>
+                    <Link to={`/Searching&search=${searchText}`} className='searchDisplayOthers'>See  {foundPosts.length > 3 ? 'more posts and' : ''} users here! </Link>
                 </section>
-                    <Link data-tip="Search" className='d-flex align-items-center' to={`/Searching&search=${searchText}`}>
+                    <Link  data-tip="Search" className='d-flex align-items-center' to={`/Searching&search=${searchText}`}>
                         <Icon.Search />
                     </Link>
                 

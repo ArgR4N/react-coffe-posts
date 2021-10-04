@@ -27,6 +27,7 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
         if (newPost.text.split('').length > 950) {
             return [false, 'The text have a 950 characters max!']
         }
+        if (newPost.forum === '') return [false, 'The post needs a forum!']
         else return [true, '']
     }
     //Handelers
@@ -92,9 +93,9 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
             setShowForumDisplay(true)
         }
     }
-
+    console.log(user);
 return(
-    <form style={isOpen ? {border:'none'} : {height:'45px', border:'none'}} onSubmit={handleSubmit} className='p-2 overflow-hidden w-75 mb-2 mt-4 card' >
+    <form style={isOpen ? {border:'none'} : {height:'45px', border:'none'}} onSubmit={handleSubmit} className='p-2 w-100 overflow-hidden mb-2 mt-4 card' >
         <div onClick={handleOpenFormClick}  style={{fontSize:'23px', marginBottom:'10px', cursor:'pointer'}} className='d-flex  align-items-center justify-content-between openFormState'>
             <h4 style={{margin:'0', userSelect:'none'}}>Create Post</h4>
             <button 

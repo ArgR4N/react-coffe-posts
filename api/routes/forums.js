@@ -8,6 +8,7 @@ router.get('/forums', (req, res, next) =>{
 
     Forum.find()
         .exec((err, forums) =>{
+            if(!forums) return res.send('No forums!')
             if (err) next(err);
             const forumsList = forums.map(forum => ({
                 createdAt:forum.createdAt,
@@ -23,6 +24,7 @@ router.get('/forums', (req, res, next) =>{
 })
 
 router.post('/forums', (req, res, next) =>{
+    console.log(req.body.name);
     const forum = new Forum({
         name:req.body.name,
         description:req.body.description,

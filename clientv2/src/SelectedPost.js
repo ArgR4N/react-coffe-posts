@@ -21,7 +21,8 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
                     title:res.data.title,
                     text:res.data.text,
                     id:res.data._id,
-                    username:res.data.user
+                    username:res.data.user,
+                    forum:res.data.forum
                 }
                 setCoffees({original:res.data.likes, actual:res.data.likes})
                 setSelectedPost(newSelectedPost)
@@ -58,7 +59,7 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
                         title:res.data.title,
                         text:res.data.text,
                         id:res.data._id,
-                        user:res.data.user
+                        username:res.data.user
                     }
                     setCoffees({original:res.data.likes, actual:res.data.likes})
                     setSelectedPost(newSelectedPost)
@@ -91,9 +92,9 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
         else return [true, '']
     }
         return(
-        <main className='d-flex flex-row justify-content-center'>
+        <main className='d-flex flex-column align-items-center justify-content-center'>
             {selectedPost.title ? editing ?
-            <div  className="card selectedPost">
+            <div  className=" selectedPost">
             <form className="gap-2 w-100 d-flex p-5 justify-content-center align-items-center" style={{flexDirection:'column'}}>
                 <input onChange={e => (setNewPost(prevState => ({...prevState, title:e.target.value})))} value={newPost.title}  placeholder={selectedPost.title} className="w-75 input form-control"></input>
                 <textarea  onChange={e => (setNewPost(prevState => ({...prevState, text:e.target.value})))} value={newPost.text} rows="6" placeholder={selectedPost.text} className="w-75 form-control"></textarea>
@@ -123,8 +124,20 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
             :
             <div  className="card selectedPost">
                 <div className="card-body" >
+                <div className="card-subtitle mb-2 text-muted ">
+                        <h7>
+                            Forum:
+                            <Link className='postForum' to={`/Forum/${selectedPost.forum}`}>
+                                {selectedPost.forum}
+                            </Link>
+                            /Published by:
+                            <Link className='postUser   w-auto' to={`/Profile/${selectedPost.username}`}> 
+                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${selectedPost.username}.svg`}></img>
+                                {selectedPost.username}
+                            </Link>
+                        </h7>
+                    </div>
                     <h5 className="card-title">{selectedPost.title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">forum - {selectedPost.username} </h6>
                     <p className="card-text">{selectedPost.text}</p>
                 </div>
                 <div className='btnContainer'>
@@ -170,7 +183,13 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
                         </div>
                 </div>
             </div>
-            : 'Searching ...'}        
+            : 'Searching ...'}
+            <div className='w-75'>
+                <h4>Comments:</h4>
+                <ul>
+                   { ["a", "b"].map(e => <li>{e}</li>)}
+                </ul>
+            </div>        
         </main>
     )
 }

@@ -5,17 +5,9 @@ const PostSchema = new mongoose.Schema({
     text:{type:String, required:true},
     createdAt:{type:Date, default:Date.now()},
     likes:{type:Number, default:0},
-    user:{type: String, ref:'users' , required:true},
-    forum:{ type:String }
+    user:{type: String, ref:'User' , required:true},
+    forum:{ type:String },
+    comments:{ type:Array, default:[] }
 }); 
-/*With users and forums functions
-const PostSchema = new mongoose.Schema({
-    title:{type:String, required:true},
-    text:{type:String, required:true},
-    createdAt:{type:Date, default:Date.now()},
-    forumName:{type:String, required:true},
-    userId:{type:String, required:true}
-}); 
-*/
 
 module.exports = mongoose.model('Post', PostSchema);

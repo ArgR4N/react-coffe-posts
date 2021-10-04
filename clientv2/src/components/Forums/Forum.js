@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons'
 import toast from 'react-hot-toast';
 import { useState,useEffect } from 'react';
-const Forum = ({forum, user, setShowForm, setClickedForum, joinFunction, unJoinFunction}) =>{
+const Forum = ({forum, user, setShowForm, setClickedForum, unJoinFunction, joinFunction}) =>{
     const {name, description} = forum
     const [isJoined, setIsJoined] = useState(false)
     const handlePostClick  = _ =>{
@@ -44,7 +44,7 @@ const Forum = ({forum, user, setShowForm, setClickedForum, joinFunction, unJoinF
                 Join
                 <Icon.Play/>
             </Link>}
-                <Link  to='/Forums' onClick={user ? handlePostClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? 'btn-second' : 'btn-secondary'}`}>
+                <Link  to='/Forums' onClick={user ? handlePostClick : () => toast.error('You need to be logged in!')} className={`btn ${user ? 'btn-main' : 'btn-secondary'}`}>
                     Post 
                     <Icon.CursorFill/>
                 </Link>

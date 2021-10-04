@@ -1,5 +1,5 @@
-import Post from './components/Post'
-import PostForm from './components/PostForm'
+import Post from './components/Posts/Post'
+import PostForm from './components/Posts/PostForm'
 const Home = ( {postsList, addPost, deletePost, updatePost, user, savePost, forums} ) =>{
   const setSavedFunction = (postId) =>{
     let state = false;
@@ -11,12 +11,13 @@ const Home = ( {postsList, addPost, deletePost, updatePost, user, savePost, foru
       <main className='d-flex flex-row justify-content-center'>
 
         <section className='mainSection'>
-          <div className='d-flex justify-content-center w-100'>
+          <div style={{margin:'0 auto'}} className='d-flex justify-content-center w-75'>
             <PostForm
             addPost={addPost} 
             username={user ? user.username : false} 
             user={user}
             forums={forums}
+
             />
           </div>
           <div className='mt-3 postsContainer'>

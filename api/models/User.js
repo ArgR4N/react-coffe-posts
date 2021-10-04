@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     password:{type:String, required:true},
     createdAt:{type:Date, default:Date.now()},
     savedPosts:{type:Array, default:[]},
-    forums:{type:Array, default:[]}
+    forums:{type:Array, default:[]},
+    userIcon:{ type:String }
 }); 
 
 module.exports = mongoose.model('User', UserSchema);

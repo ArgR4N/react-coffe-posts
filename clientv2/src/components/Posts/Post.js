@@ -10,14 +10,13 @@ const Post = ({inUser = false, inForum = false ,  isSaved, title, text, deletePo
         deletePost(id)
     }
     const handleAddCoffee = () =>{
-        if (coffees !== coffeesState.counter) {
+        setCoffeesState(prevState => ({state:true, counter:prevState.counter + 1}))
             const newPost = {
                 title,
                 text,
-                likes:coffeesState.counter
+                likes:coffeesState.counter + 1
             }
             updatePost(id, newPost)
-        }
     }
 
     const handleSavePost = () =>{
@@ -26,8 +25,20 @@ const Post = ({inUser = false, inForum = false ,  isSaved, title, text, deletePo
     return(
             <div  className={`card post ${inForum ?  'w-100 m-2' : ''}`}>
                 <Link style={inUser ? {maxWidth:'none'} : {}} to={`/post/${id}`} className="card-body" >
+                    <div className="card-subtitle mb-2 text-muted ">
+                        <h7>
+                            Forum:
+                            <Link className='postForum' to={`/Forum/${postForum}`}>
+                                {postForum}
+                            </Link>
+                            /Published by:
+                            <Link className='postUser   w-auto' to={`/Profile/${username}`}> 
+                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${username}.svg`}></img>
+                                {username}
+                            </Link>
+                        </h7>
+                    </div>
                     <h5 className="card-title">{title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted"><Link to={`/Forum/${postForum}`}>{postForum}</Link> - <Link to={`/Profile/${username}`}>{username}</Link></h6>
                     <p className="card-text">{text}</p>
                 </Link>
                 <div style={inUser ? {display:'none'} : {}} className='btnContainer'>
@@ -62,12 +73,15 @@ const Post = ({inUser = false, inForum = false ,  isSaved, title, text, deletePo
                         </div>
                     </div>
                     <button 
-                    onMouseLeave={handleAddCoffee} 
-                    onClick={() => setCoffeesState(prevState => ({state:true, counter:prevState.counter + 1}))}
+                    onClick={handleAddCoffee}
                     className={'Give-a-coffe mb-1'}>
                         <Icon.CupFill/>
                     <span className='Give-a-coffeCounter'> {coffeesState.counter > 0 ? coffeesState.counter : null} </span>
                     </button>
+                </div>
+                <div className={`d-${inUser ? 'flex' : 'none'} m-2 gap-1`} >
+                    <Icon.CupFill style={{fontSize:'26px'}} />
+                    <h4 >{coffeesState.counter} </h4>
                 </div>
             </div>
     )

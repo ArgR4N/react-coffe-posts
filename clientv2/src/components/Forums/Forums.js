@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Forum from './Forum'
 import ForumForm from './ForumForm';
 import toast from 'react-hot-toast'
-import PostForm from './PostForm'
+import PostForm from '../Posts/PostForm'
 import axios from 'axios';
 //Components <=
 
@@ -66,16 +66,22 @@ const Forums = ({ forums, createForm, showModal, setShowModal, user, addPost, se
         <main >
             <section onClick={handLeModalClick} className={`forumFormModal ${showForm ? null :'d-none'} `}>
                 <PostForm 
-                username={user ? user.username : false} 
-                user={user}
-                forums={forums}
-                alredyOpen={true}
-                clickedForum={clickedForum}
-                addPost={addPost}
-                setShowForm={setShowForm}
+                    username={user ? user.username : false} 
+                    user={user}
+                    forums={forums}
+                    alredyOpen={true}
+                    clickedForum={clickedForum}
+                    addPost={addPost}
+                    setShowForm={setShowForm}
                 />
             </section>
-            <ForumForm  handLeModalClick={handLeModalClick} user={user} createForm={createForm} showModal={showModal} setShowModal={setShowModal} />
+                <ForumForm  
+                    handLeModalClick={handLeModalClick} 
+                    user={user} 
+                    createForm={createForm} 
+                    showModal={showModal} 
+                    setShowModal={setShowModal} 
+                />
             <button onClick={handleCreateFormClick} className={`btn ${showForm ? 'd-none' : ''} ${showModal ? 'btn-danger' : 'btn-forum'} mt-1 mx-2 position-fixed`}>
                 {showModal ? 'Cancel' : 'Create Forum'}
             </button>

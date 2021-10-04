@@ -7,7 +7,6 @@ const session = require('express-session');
 
 router.get('/posts', (req, res, next) =>{
     Post.find()
-        .sort({createdAt:-1})
         .exec((err, posts) =>{
             if (err) next(err);
             const postsList = posts.map(post => ({
@@ -17,9 +16,10 @@ router.get('/posts', (req, res, next) =>{
                 createdAt:post.createdAt,
                 likes:post.likes,
                 user:post.user,
-                forum:post.forum
+                forum:post.forum,
+                comments:post.comments
             }))
-            res.status(200).json({
+            return res.status(200).json({
                 count:postsList.length,
                 posts:postsList
             })
@@ -37,7 +37,8 @@ router.post('/posts', (req, res, next) =>{
                 title:req.body.title,
                 text:req.body.text,
                 user:req.body.username,
-                forum:req.body.forum
+                forum:req.body.forum,
+                comments:req.body.comments
             })
             post.save((err, post) =>{
                 if(err) next(err);
@@ -88,8 +89,18 @@ router.delete('/posts/:id', (req, res, next) =>{
             
             res.status(200).json(selectedPost)
         })
-})
-
+    })
+// //Coments
+// router.post('/comment/:id', (req, res, next) =>{
+//     const comment = { msg:req.body.msg, comments:req.body.comments  }
+//     Post.findByIdAndUpdate(req.params.id, {comments: [...originalComments, comment]}, {new: true, omitUndefined:true})
+//         .exec((err, post) =>{
+//             if(err) next(err)
+//             if(!post) return res.status(404).send('Not Found')
+//             res.status(201).send('Post Edited')
+//         })
+// })
+    
 router.get('/user=:username/posts', (req, res, next) =>{
     Post.find({user:req.params.username})
         .exec((err, posts) =>{
@@ -123,5 +134,6 @@ router.get('/forum=:forum/posts', (req, res, next) =>{
             return res.status(200).json({count:postsList.length, postsList})
         })
 });
+
 
 module.exports = router

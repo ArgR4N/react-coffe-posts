@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Redirect} from 'react-router';
 import { Link } from 'react-router-dom';
-import Post from './Post'
+import Post from '../Posts/Post'
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner'
 import * as Icon from 'react-bootstrap-icons';
@@ -99,9 +99,12 @@ const Profile = ({user, logOutFunction}) =>{
 
                 </ul> 
                 <section className='userInfo'>
-                    <h3> {user.username} 
-                    <button onClick={() => logOutFunction()} className='logout'><Icon.DoorClosed/></button> 
-                    </h3> 
+                    <div className='d-flex flex-column align-items-center'>
+                        <img style={{width:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/big-smile/${user.username}.svg`}></img>
+                        <h3> 
+                            {user.username} 
+                        </h3>
+                    </div> 
                     <div className='descriptionSection'>
                         <textarea disabled={!newDescription.editing} onChange={e => setNewDescription(prev => ({...prev, description:e.target.value}))} value={newDescription.description} className='form-control' placeholder='Description'></textarea>
                         <div style={{minWidth:'50px', width:'25%'}}>
@@ -120,11 +123,12 @@ const Profile = ({user, logOutFunction}) =>{
                         </div>
                     </div>
                         <h3>Forums:</h3>
-                    <div style={{minHeight:'50vh'}} className=' d-flex flex-column overflow-auto'>
+                    <div style={{height:'45%'}} className=' d-flex flex-column overflow-auto'>
                         {user.forums && user.forums.length > 0 
                         ? user.forums.map(forum => <Link className='my-1 mx-3 d-flex alig-items-center card px-3 py-2' to={`/Forum/${forum}`}> <h4>{forum}</h4> </Link>)
                         : <h3 style={{textAlign:'center'}}> Any forum </h3>}
                     </div>
+                <button onClick={logOutFunction} className='btn-danger p-2 position-absolute' style={{borderRadius:'10px',  width:'100px'}}> <Icon.DoorClosed/> LogOut</button>
                 </section>
             </div>
         )

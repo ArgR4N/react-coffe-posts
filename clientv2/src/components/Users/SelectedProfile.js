@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner'
-import Post from './Post'
+import Post from '../Posts/Post'
 import axios from 'axios';
+import * as Icon from 'react-bootstrap-icons'
+
 const SelectedProfile = _ =>{
     const { user } = useParams();
     const [selectedUser, setSelectedUser] = useState(null)
@@ -46,13 +49,24 @@ const SelectedProfile = _ =>{
             : renderNoPost()
             }
             <section className='userInfo'>
-                <h3> {selectedUser.username} </h3>
+            <div className='d-flex flex-column align-items-center'>
+                        <img style={{width:'100px', border:'3px solid var(--main-color)', borderRadius:'30px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${selectedUser.username}.svg`}></img>
+                        <h3> 
+                            {selectedUser.username} 
+                        </h3>
+                    </div> 
                 <h6>Description:</h6>
                 <textarea disabled className='form-control' ></textarea>
                 <h3>Forums:</h3>
-                {user.forums && user.forums.length > 0 
-                ? user.forums.map(forum => <div> {forum} </div>)
-                : <h3 style={{textAlign:'center'}}> Any forum</h3>}
+                    <div style={{height:'45%'}}  className=' d-flex flex-column overflow-auto'>
+                        {selectedUser.forums && selectedUser.forums.length > 0 
+                        ? selectedUser.forums.map(forum => (
+                        <Link className='my-1 mx-3 d-flex alig-items-center card px-3 py-2' to={`/Forum/${forum}`}>
+                            <h4>{forum}</h4>
+                            <button className='btn btn-main'>Join <Icon.Play/> </button>
+                        </Link>))
+                        : <h3 style={{textAlign:'center'}}> Any forum </h3>}
+                    </div>
             </section>
             
         </div>

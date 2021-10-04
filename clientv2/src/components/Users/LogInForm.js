@@ -28,7 +28,7 @@ const LogInForm = ({logInFunction, user}) =>{
                      type="password" className="form-control" id="exampleInputPassword1"
                      />
                 </div>
-                <button type="submit" style={{marginRight:'25px'}} className="btn btn-primary ">Log In</button>
+                <button type="submit" style={{marginRight:'25px'}} className="btn btn-main ">Log In</button>
                 <Link to='/Register'>You don´t have an account?</Link>
             </form>
         )

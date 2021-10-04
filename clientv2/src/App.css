@@ -63,6 +63,17 @@ hr{
   border: 2px solid var(--detail-color);
 }
 
+.postUser img{
+  border: 2px solid white;
+}
+
+.postForum:hover{
+  border-bottom: 1.5px solid var(--main-color);
+}
+.postUser:hover img{
+  border: 2px solid var(--main-color);
+  transition: .2s;
+}
 
 
 .btn:hover{
@@ -172,7 +183,9 @@ hr{
   color: white;
 }
 
-
+.dangerForum{
+  z-index: 100 !important;
+}
 
 .openForm, .closeForm{
   border-radius: 5px;
@@ -664,6 +677,7 @@ a:hover{
   display: flex;
   justify-content: center;
   gap: 3rem;
+
 }
 
 .userPosts{
@@ -674,15 +688,16 @@ a:hover{
 }
 
 .userInfo{
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   width: 400px;
   padding: 20px;
+  height: 50vh;
   max-height: calc(100vh - 110px);
   border-radius: 15px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 500px;
 }
 
 .userInfoBtn{
@@ -767,8 +782,47 @@ a:hover{
 .btn-second:hover{
   z-index: 1;
 }
+/*Avatar*/
+
+.createAvatarSection{
+  display: flex;
+  align-items: center;
+  width: 125px;
+  border-radius: 50px;
+}
+.createAvatarSectionBtns{
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  width: 15px;
+  gap: 15px;
+}
+
+.createAvatarSectionBtnsRight{
+  margin-left: 115px;
+}
+
+.createAvatarSectionBtns button{
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: .2s;
+}
+.createAvatarSectionBtns button:hover{
+  background-color: var(--main-color);
+}
+.selectedForumContent{
+  width: 75%;
+}
 
 @media (max-width: 600px) {
+  .searchDisplay{
+    display: none;
+  }
   .navBar{
     position: absolute;
     flex-direction: column;
@@ -823,7 +877,31 @@ a:hover{
 
   .navSearch input{
     width: 95%;
+    transition: .5s;
+    height: 35px;
+    border: 5px solid transparent;
+    border-radius: 20px;
   }
+
+  .selectedForumContent{
+    width: 95%;
+  }
+
+  .selectedForumInfo{
+    width: 95% !important;
+  }
+
+  .navSearch input:focus-visible{
+    height: 50px;
+    border-radius: 12px;
+    font-size: 28px;
+  }
+
+  .selectedForum{
+    width: 100%;
+    margin: 0;
+  }
+
   .navBarResponsiveBtn button{
     display: flex;
     align-items: center;
@@ -837,7 +915,7 @@ a:hover{
 
   .navHomeBtn{
     display: flex;
-    font-size: 25px;
+    font-size: 12px;
     justify-content: center;
     border-radius: 10px;
   }
@@ -878,8 +956,6 @@ a:hover{
     margin-top: 100px;
   }
 
-
-
   .btn-forum{
     opacity: 0.5;
   }
@@ -897,11 +973,7 @@ a:hover{
     gap: 1rem;
   }
 
-  .profileSection .userPosts{
-    width: 100%;
-  }
-
-  .userInfo{
+  .profileSection .userPosts, .userInfo{
     width: 100%;
   }
 
@@ -909,5 +981,7 @@ a:hover{
     font-size: 16px;
   }
 
-
+  .selectedForum{
+    margin: 0 ;
+  }
 }
