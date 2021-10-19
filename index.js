@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const morgan = require('morgan');
 const app = express();
-
+const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
 
@@ -24,6 +24,9 @@ mongoose
 //React frontend
 
 app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 app.get('/:route', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
