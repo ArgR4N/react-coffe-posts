@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
-const ForumSchema = new mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
     msg:{ type:String },
     comments:{ type: Array, default:[]},
-    username:{ type: String}
+    user:{ type: mongoose.Schema.Types.ObjectId, ref:'User' }
 }); 
 
-module.exports = mongoose.model('Forum', ForumSchema);
+module.exports = mongoose.model('Comment', CommentSchema);

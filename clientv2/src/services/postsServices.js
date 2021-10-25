@@ -41,3 +41,11 @@ export const addPostService = (post, setPostsList) =>{
       setPostsList(res.data.posts)
     })
   }
+
+  
+  export const postCommentService = (selectedPost, newComment, oldsComments, setter) =>{
+    axios.put(`/api/comment/${selectedPost.id}&''`, {msg:newComment, oldsComments})
+    .then(res => {
+      if(res.data[0]) setter(prev => ({...prev, comments:res.data[1]}))
+    })
+  }

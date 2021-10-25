@@ -4,6 +4,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import * as Icon from 'react-bootstrap-icons';
 
+import { postCommentService } from './services/postsServices'
+
+import Comment from './components/Comment'
+
 const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, savePost}) =>{
     const { postId, editingParam } = useParams() 
     
@@ -12,8 +16,12 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
     const [coffees, setCoffees] = useState({original:0, actual:0})
     const [errorState, setErrorState] = useState(' ')
     const [editing, setEditing] = useState(editingParam)   
-    
+    const [newComment, setNewComment] = useState("")
+
+
     useEffect(() =>{
+
+
         const loadingToast = toast.loading('Loading...')
         axios.get(`/api/posts/${postId}`)
             .then(res => {
@@ -22,7 +30,8 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
                     text:res.data.text,
                     id:res.data._id,
                     username:res.data.user,
-                    forum:res.data.forum
+                    forum:res.data.forum,
+                    comments:res.data.comments
                 }
                 setCoffees({original:res.data.likes, actual:res.data.likes})
                 setSelectedPost(newSelectedPost)
@@ -186,9 +195,14 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
             : 'Searching ...'}
             <div className='w-75'>
                 <h4>Comments:</h4>
-                <ul>
-                   { ["a", "b"].map(e => <li>{e}</li>)}
-                </ul>
+                <input type="text" value={newComment} onChange={e => setNewComment(e.target.value)} className="form-control"/>
+                <button onClick={_ => postCommentService(selectedPost, newComment, selectedPost.comments, setSelectedPost)} className="btn btn-info">Comment
+                </button>
+                <div>
+                   {selectedPost.comments && selectedPost.comments.map(comment =>(
+                        <Comment comment={comment} />
+                   ))}
+                </div>
             </div>        
         </main>
     )

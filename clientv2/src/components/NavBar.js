@@ -31,8 +31,7 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
     }
     return(
         <nav onClick={e => setNavBarOpen(e.target.id === 'searchBar')} className={`navBar ${navBarOpen ? 'navBarOpen' : ''}`}>
-            <ReactTooltip place='bottom' />
-            <Link to='/' data-tip="Home"  className='gap-2 navText'>
+            <Link to='/'className='gap-2 navText'>
                 <Icon.CupFill/>
                 CoffeePosts
             </Link>   
@@ -94,7 +93,7 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
 
                     <Link to={`/Searching&search=${searchText}`} className='searchDisplayOthers'>See  {foundPosts.length > 3 ? 'more posts and' : ''} users here! </Link>
                 </section>
-                    <Link  data-tip="Search" className='d-flex align-items-center' to={`/Searching&search=${searchText}`}>
+                    <Link  className='d-flex align-items-center' to={`/Searching&search=${searchText}`}>
                         <Icon.Search />
                     </Link>
                 

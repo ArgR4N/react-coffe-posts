@@ -8,7 +8,12 @@
   --main-color: #CFCF8C;
   --secondary-color:#CFCF8C;
   --detail-color:#030303;
+  --detail-color:#797965;
   --main-gradient:#CFCF8C;
+}
+
+svg{
+  color: var(--detail-color);
 }
 
 .main{

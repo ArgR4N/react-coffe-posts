@@ -3,7 +3,7 @@ const Post = require('../models/Post')
 const Forum = require('../models/Forum')
 const router = require('express').Router();
 const session = require('express-session');
-
+const Comment = require('../models/Comment')
 
 router.get('/posts', (req, res, next) =>{
     Post.find()
@@ -37,9 +37,9 @@ router.post('/posts', (req, res, next) =>{
                 title:req.body.title,
                 text:req.body.text,
                 user:req.body.username,
-                forum:req.body.forum,
-                comments:req.body.comments
+                forum:req.body.forum
             })
+            console.log(req.body)
             post.save((err, post) =>{
                 if(err) next(err);
                 res.status(201).json(post)
@@ -71,12 +71,12 @@ router.delete('/posts/:id', (req, res, next) =>{
         })
     })
     
-    router.get('/posts/:id', (req, res, next) =>{
+router.get('/posts/:id', (req, res, next) =>{
         Post.findById(req.params.id)
-        .select('title text createdAt likes _id user forum')
         .exec((err, post) =>{
             if (err) next(err);
             if(!post) return res.status(404).send("Not Found")
+
             const selectedPost = {
                 title:post.title,
                 text:post.text,
@@ -84,23 +84,24 @@ router.delete('/posts/:id', (req, res, next) =>{
                 createdAt:post.createdAt,
                 likes:post.likes,
                 user:post.user,
-                forum:post.forum
+                forum:post.forum,
+                comments:post.comments
             }
             
             res.status(200).json(selectedPost)
         })
     })
-// //Coments
-// router.post('/comment/:id', (req, res, next) =>{
-//     const comment = { msg:req.body.msg, comments:req.body.comments  }
-//     Post.findByIdAndUpdate(req.params.id, {comments: [...originalComments, comment]}, {new: true, omitUndefined:true})
-//         .exec((err, post) =>{
-//             if(err) next(err)
-//             if(!post) return res.status(404).send('Not Found')
-//             res.status(201).send('Post Edited')
-//         })
-// })
+
+
+router.get("/comments", (req, res, next) =>{
+    Comment.find()
+    .exec((err, comments) =>{
+
+        res.json(comments)
+    })
     
+})
+
 router.get('/user=:username/posts', (req, res, next) =>{
     Post.find({user:req.params.username})
         .exec((err, posts) =>{
@@ -135,5 +136,19 @@ router.get('/forum=:forum/posts', (req, res, next) =>{
         })
 });
 
+
+
+// //Coments
+router.put('/comment/:id&:parent', (req, res, next) =>{
+    const comments = [new Comment({
+        msg:req.body.msg, 
+        user:req.params.id
+    }), ...req.body.oldsComments]
+    Post.findByIdAndUpdate(req.params.id, {comments} , {new: true, omitUndefined:true})
+    .exec((err, post) =>{
+        if(err) next(err)
+        return res.status(201).json([true, comments])
+    })
+})
 
 module.exports = router

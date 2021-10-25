@@ -95,7 +95,7 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
     }
     console.log(user);
 return(
-    <form style={isOpen ? {border:'none'} : {height:'45px', border:'none'}} onSubmit={handleSubmit} className='p-2 w-100 overflow-hidden mb-2 mt-4 card' >
+    <form style={isOpen ? {border:'none'} : {height:'45px', border:'none', gap:'10px'}} onSubmit={handleSubmit} className='p-2 w-100 overflow-hidden mb-2 mt-4 card' >
         <div onClick={handleOpenFormClick}  style={{fontSize:'23px', marginBottom:'10px', cursor:'pointer'}} className='d-flex  align-items-center justify-content-between openFormState'>
             <h4 style={{margin:'0', userSelect:'none'}}>Create Post</h4>
             <button 
