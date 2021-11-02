@@ -93,14 +93,7 @@ router.get('/posts/:id', (req, res, next) =>{
     })
 
 
-router.get("/comments", (req, res, next) =>{
-    Comment.find()
-    .exec((err, comments) =>{
 
-        res.json(comments)
-    })
-    
-})
 
 router.get('/user=:username/posts', (req, res, next) =>{
     Post.find({user:req.params.username})
@@ -139,16 +132,36 @@ router.get('/forum=:forum/posts', (req, res, next) =>{
 
 
 // //Coments
+
 router.put('/comment/:id&:parent', (req, res, next) =>{
-    const comments = [new Comment({
+    console.log(req.params.id);
+    const newComment = new Comment({
         msg:req.body.msg, 
-        user:req.params.id
-    }), ...req.body.oldsComments]
+        user:req.params.id,
+        xd:'617f454cdc64be3eb41c293e'
+    })
+    
+    console.log(newComment.user);
+    const comments = [newComment , ...req.body.oldsComments]
+    
+    newComment.save()
+
     Post.findByIdAndUpdate(req.params.id, {comments} , {new: true, omitUndefined:true})
     .exec((err, post) =>{
         if(err) next(err)
         return res.status(201).json([true, comments])
     })
+})
+
+router.get("/comment", (req, res, next) =>{
+    Comment.find().
+    populate('xd')
+    .exec((err, comments) =>{
+        if(err) next(err)
+        if(!comments) return res.status(404).json({msg:"Error"})
+        res.status(200).json(comments)
+    })
+    
 })
 
 module.exports = router
