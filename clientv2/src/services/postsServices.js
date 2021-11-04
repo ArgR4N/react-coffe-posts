@@ -43,9 +43,9 @@ export const addPostService = (post, setPostsList) =>{
   }
 
   
-  export const postCommentService = (selectedPost, newComment, oldsComments, setter) =>{
+  export const postCommentService = (selectedPost, newComment, oldsComments, setter, userId) =>{
     if(newComment === "") return toast.error("comment something!")
-    axios.put(`/api/comment/${selectedPost.id}&''`, {msg:newComment, oldsComments})
+    axios.put(`/api/comment/${selectedPost.id}&''`, {msg:newComment, oldsComments, userId:'6157afa555414e03681f41eb'})
     .then(res => {
       if(res.data[0]) setter(prev => ({...prev, comments:res.data[1]}))
     })

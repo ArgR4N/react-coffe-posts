@@ -137,8 +137,8 @@ router.put('/comment/:id&:parent', (req, res, next) =>{
     console.log(req.params.id);
     const newComment = new Comment({
         msg:req.body.msg, 
-        user:req.params.id,
-        xd:'617f454cdc64be3eb41c293e'
+        user:req.body.msg, 
+        post:req.params.id
     })
     
     console.log(newComment.user);
@@ -155,7 +155,7 @@ router.put('/comment/:id&:parent', (req, res, next) =>{
 
 router.get("/comment", (req, res, next) =>{
     Comment.find().
-    populate('xd')
+    populate('user', 'username userIcon')
     .exec((err, comments) =>{
         if(err) next(err)
         if(!comments) return res.status(404).json({msg:"Error"})
