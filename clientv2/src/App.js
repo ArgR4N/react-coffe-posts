@@ -84,6 +84,10 @@ const App = () => {
   return (
     <Router>
     <div onClick={handleClick} className='main'>
+      {/* <span className="position-fixed bottom-0 p-3 bottomIcon">
+      <Icon.BugFill/>
+      <small className='mx-2 bugText'>  Bug Report </small>
+      </span> */}
       <Toaster 
        position={window.screen.width > 600 ? "bottom-right" : "top-center"}
        reverseOrder={false}

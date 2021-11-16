@@ -26,17 +26,17 @@ const Post = ({inUser = false, inForum = false ,  isSaved, title, text, deletePo
             <div  className={`card post ${inForum ?  'w-100 m-2' : ''}`}>
                 <Link style={inUser ? {maxWidth:'none'} : {}} to={`/post/${id}`} className="card-body" >
                     <div className="card-subtitle mb-2 text-muted ">
-                        <h7>
+                        <p>
                             Forum:
                             <Link className='postForum' to={`/Forum/${postForum}`}>
                                 {postForum}
                             </Link>
                             /Published by:
                             <Link className='postUser   w-auto' to={`/Profile/${username}`}> 
-                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${username}.svg`}></img>
+                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/big-smile/${username}.svg`}></img>
                                 {username}
                             </Link>
-                        </h7>
+                        </p>
                     </div>
                     <h5 className="card-title">{title}</h5>
                     <p className="card-text">{text}</p>

@@ -22,13 +22,14 @@ const SelectedForum = ({user, setUser, forums}) =>{
             })
         if(user){
             user.forums.forEach(forum =>{
+                console.log(forum);
                 if (forum === selectedForum.name) setIsJoined(true) 
         })
         }
-    }, [forum, user])
+    }, [forum, user, selectedForum.name])
 
-    const joinFunction = (forum) =>{
-        axios.put(`/api/users/${user.username}`, {forums:[...user.forums, forum]})
+    const joinFunction = _ =>{
+        axios.put(`/api/users/${user.id}`, {forums:[...user.forums, selectedForum.name]})
         .then(res => {
             if(res.data.state){
                 setIsJoined(true)
@@ -63,9 +64,6 @@ const SelectedForum = ({user, setUser, forums}) =>{
                     {isJoined ? <Icon.PlayFill/> : <Icon.Play/>}
                     </button> 
                 </div>
-                <ul>
-                    {users.map(user => <h3> user </h3>)}
-                </ul>
             </section>
             <section style={{margin:'0 auto'}} className='selectedForumContent d-flex justify-content-between'>
                 <article className='w-75'>

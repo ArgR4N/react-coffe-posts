@@ -4,8 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import * as Icon from 'react-bootstrap-icons';
 
-import { postCommentService } from './services/postsServices'
-
+import CommentForm from './components/CommentForm';
 import Comment from './components/Comment'
 
 const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, savePost}) =>{
@@ -16,7 +15,6 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
     const [coffees, setCoffees] = useState({original:0, actual:0})
     const [errorState, setErrorState] = useState(' ')
     const [editing, setEditing] = useState(editingParam)   
-    const [newComment, setNewComment] = useState("")
 
 
     useEffect(() =>{
@@ -141,7 +139,7 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
                             </Link>
                             /Published by:
                             <Link className='postUser   w-auto' to={`/Profile/${selectedPost.username}`}> 
-                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${selectedPost.username}.svg`}></img>
+                                <img className='mx-1 ' style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/big-smile/${selectedPost.username}.svg`}></img>
                                 {selectedPost.username}
                             </Link>
                         </h7>
@@ -195,16 +193,17 @@ const SelectedPost = ({updatePost, deletePost, setPostsList, sessionUsername, sa
             : 'Searching ...'}
             <div className='w-75'>
                 <h4>Comments:</h4>
-                <div className="bg-white p-3 rounded">
-                <h6>New Comment</h6>
-                <input type="text" value={newComment} onChange={e => setNewComment(e.target.value)} className="form-control"/>
-                <button onClick={_ => postCommentService(selectedPost, newComment, selectedPost.comments, setSelectedPost)} className={`btn my-2 ${newComment != "" ? 'btn-main' : 'btn-secondary'}`}>Comment
-                </button>
-
-                </div>
+                <CommentForm
+                selectedPost={selectedPost}
+                setSelectedPost={setSelectedPost}
+                sessionUsername={sessionUsername}
+                />
                 <div>
                    {selectedPost.comments && selectedPost.comments.map(comment =>(
-                        <Comment comment={comment} />
+                        <Comment comment={comment}
+                        selectedPost={selectedPost}
+                        setSelectedPost={setSelectedPost}
+                        sessionUsername={sessionUsername} />
                    ))}
                 </div>
             </div>        

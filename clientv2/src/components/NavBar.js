@@ -54,7 +54,7 @@ const NavBar = ({postsList, user, setDisplayShow, displayShow, navBarOpen,setNav
                         <Link to='/Profile'>
                             {user ?
                             <div className='d-flex align-items-center gap-1'>
-                                <img style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${user.username}.svg?background=white`}></img>
+                                <img style={{width:'30px', borderRadius:'100px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/big-smile/${user.username}.svg?background=white`}></img>
                                 <h5 style={{margin:'0'}}>{user.username}</h5>
                             </div>
                             :

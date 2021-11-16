@@ -7,7 +7,6 @@
 :root{
   --main-color: #CFCF8C;
   --secondary-color:#CFCF8C;
-  --detail-color:#030303;
   --detail-color:#797965;
   --main-gradient:#CFCF8C;
 }
@@ -520,10 +519,13 @@ a:hover{
   height: 150px;
   width: 350px;
   background-color: white;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 0px 15px;
   border-radius: 10px 10px 0 0;
+}
+
+.forum p{
+  overflow: auto;
+  height: 74%;
 }
 
 .forumSearchBar input{
@@ -825,6 +827,13 @@ a:hover{
 }
 
 @media (max-width: 600px) {
+
+  .btnPosts{
+    width: 100vw !important;
+    align-items: center;
+    padding: 0 15px;
+  }
+
   .searchDisplay{
     display: none;
   }
@@ -989,4 +998,24 @@ a:hover{
   .selectedForum{
     margin: 0 ;
   }
+}
+
+.bottomIcon svg{
+  transition: 0.3s;
+  font-size: 23px;
+  cursor: pointer;
+}
+.bottomIcon .bugText{ 
+  transition: .3s;
+  cursor: pointer;
+  opacity: 0;
+  user-select: none;
+}
+.bottomIcon:hover .bugText{ opacity: 1;}
+
+.bottomIcon:hover svg{
+  transform: scale(1.2);
+}
+.btn-secondary svg, .btn-main svg{
+  color: white;
 }

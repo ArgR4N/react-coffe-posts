@@ -7,7 +7,7 @@ const PostSchema = new mongoose.Schema({
     likes:{type:Number, default:0},
     user:{type: String, ref:'User' , required:true},
     forum:{ type:String },
-    comments:{ type:Array, default:[] },
+    comments:{ type:Array, default:[] , ref:'Comment'},
     icon: { type:String }
 }); 
 

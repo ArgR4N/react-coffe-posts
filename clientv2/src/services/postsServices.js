@@ -43,9 +43,10 @@ export const addPostService = (post, setPostsList) =>{
   }
 
   
-  export const postCommentService = (selectedPost, newComment, oldsComments, setter, userId) =>{
+  export const postCommentService = (selectedPost, newComment, oldsComments, setter, username, parentComment = 'null') =>{
     if(newComment === "") return toast.error("comment something!")
-    axios.put(`/api/comment/${selectedPost.id}&''`, {msg:newComment, oldsComments, userId:'6157afa555414e03681f41eb'})
+    if (username === '') return toast.error('Yoy need to be logged in!')
+    axios.put(`/api/comment/${selectedPost.id}&${parentComment}`, {msg:newComment, oldsComments, username})
     .then(res => {
       if(res.data[0]) setter(prev => ({...prev, comments:res.data[1]}))
     })

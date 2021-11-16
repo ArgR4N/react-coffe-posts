@@ -25,9 +25,6 @@ export const logInService = (user, setUser) =>{
 export const registerService = (user, setUser) =>{
     if (user.username !== '' && user.password !== '') {
       const registerPromise = axios.post('api/register', user)
-      .then(res => {
-        setUser(res.data[1])
-      })
       //Toast
       toast.promise(registerPromise, {
         loading:'Registering...',

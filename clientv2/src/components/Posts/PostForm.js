@@ -33,7 +33,6 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
     //Handelers
     const handleSubmit = e =>{
         e.preventDefault()
-        console.log(newPost)
         if(username){
             const msg = lengthEnsureFunction()[1]
             if (lengthEnsureFunction()[0]) {
@@ -93,7 +92,6 @@ const PostForm = ({addPost, username, user, forums ,alredyOpen = false, clickedF
             setShowForumDisplay(true)
         }
     }
-    console.log(user);
 return(
     <form style={isOpen ? {border:'none'} : {height:'45px', border:'none', gap:'10px'}} onSubmit={handleSubmit} className='p-2 w-100 overflow-hidden mb-2 mt-4 card' >
         <div onClick={handleOpenFormClick}  style={{fontSize:'23px', marginBottom:'10px', cursor:'pointer'}} className='d-flex  align-items-center justify-content-between openFormState'>

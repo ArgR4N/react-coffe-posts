@@ -50,7 +50,7 @@ const SelectedProfile = _ =>{
             }
             <section className='userInfo'>
             <div className='d-flex flex-column align-items-center'>
-                        <img style={{width:'100px', border:'3px solid var(--main-color)', borderRadius:'30px'}} alt='user-avatar' src={`https://avatars.dicebear.com/api/jdenticon/${selectedUser.username}.svg`}></img>
+                        <img style={{width:'100px'}} alt='user-avatar' src={selectedUser.userIcon}></img>
                         <h3> 
                             {selectedUser.username} 
                         </h3>

@@ -22,7 +22,7 @@ router.post('/register', (req, res, next) =>{
             })
             newUser.save()
             .then(savedUser =>{
-              return res.status(201).send(['User Created!', savedUser])
+              return res.status(201).send('User Created!')
             });
           })
         
@@ -97,6 +97,7 @@ router.post('/register', (req, res, next) =>{
   } )
 
   router.put('/users/:id', (req, res, next) =>{
+    console.log(req.body)
     if(req.body.savedPosts){
       let unSave = false;
       req.body.savedPosts.forEach(id => id === req.body.postId ? unSave = true : null)
